@@ -2,17 +2,17 @@
 
 ## How It Works
 
-A single V by V edge grid indexed by vertex pair; the dense graph representation.
+A dynamically grown N by N weighted edge grid indexed by node-handle indexes; the dense graph representation.
 
 ## Required API
 
-Implement AdjacencyMatrix with: constructor(vertexCount, directed), addEdge(from, to), removeEdge(from, to), hasEdge(from, to), neighbors(vertex), vertexCount, edgeCount. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+Implement `AdjacencyMatrix<T>` with: `create(directed)`, `addNode(value): NodeHandle`, `findNode(value): NodeHandle | undefined`, `nodeAt(index): NodeHandle | undefined`, `nodeValue(node): T | undefined`, `addEdge(from: NodeHandle, to: NodeHandle, weight)`, `removeEdge`, `hasEdge`, `neighbors(node)`, `nodeCount`, `edgeCount`, and `asGraphView(): GraphView<T>`. `neighbors(node)` yields deterministic `{ node: NodeHandle, weight: number }` edges.
 
 ## Contract
 
-- Reject out-of-range vertices. Fresh cells are clear. Undirected mutations preserve symmetry. Duplicate adds and absent removes are clean no-ops with documented return values. Neighbor iteration scans the full row.
+- `create` starts empty; `addNode` returns a stable graph-local handle. `nodeAt` uses insertion order and `findNode` locates a value. Reject foreign/invalid handles and non-finite weights. Fresh cells are clear. Undirected mutations preserve symmetry and weight. Duplicate adds and absent removes are clean no-ops. Neighbor iteration scans the full row. `asGraphView()` exposes dynamic node lookup and weighted handle iteration without representation details.
 - Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
 
 ## Complexity Targets
 
-- add/remove/has O(1); neighbor iteration O(V); full traversal O(V^2); O(V^2) space.
+- addNode O(N^2); add/remove/has O(1); neighbor iteration O(N); full traversal O(N^2); O(N^2) space.

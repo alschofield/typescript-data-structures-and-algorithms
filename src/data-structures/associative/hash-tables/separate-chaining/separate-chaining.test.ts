@@ -6,6 +6,6 @@ describe("Separate-Chaining Hash Table", () => {
     expect(HashTable).toBeDefined();
   });
 
-  it.todo("covers constructor(hash, equals), set(key, value), get(key), remove(key), contains(key), size, isEmpty");
-  it.todo("covers contract edge cases and complexity invariants");
+  it.todo("covers constructor(initialCapacity, hash, equals), set(key, value), setResizing(key, value), get(key), remove(key), contains(key), size, capacity, isEmpty");
+  it.todo("rejects zero capacity; keeps set capacity fixed; doubles and rehashes before setResizing exceeds 0.75 load");
 });

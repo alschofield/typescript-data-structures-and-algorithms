@@ -2,15 +2,15 @@
 
 ## How It Works
 
-Traverse an adjacency list level by level using a FIFO frontier.
+Traverse any GraphView level by level using a FIFO frontier.
 
 ## Required API
 
-Implement breadthFirstSearch with: breadthFirstSearch(graph, source): number[] | undefined. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+Implement `breadthFirstSearch<T>(graph: GraphView<T>, source: NodeHandle): NodeHandle[] | undefined`.
 
 ## Contract
 
-- Mark vertices visited when enqueued. Visit each reachable vertex once, leave graph unchanged, reject invalid source, and handle cycles, self-loops, and disconnected graphs. Do not use a library queue.
+- Mark node handles visited when enqueued. Visit each reachable node once, leave graph unchanged, reject invalid or foreign source handles, and handle cycles, self-loops, and disconnected graphs. Accept dynamic GraphView adapters and ignore every edge weight. Return handles in visit order. Do not use a library queue.
 - Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
 
 ## Complexity Targets

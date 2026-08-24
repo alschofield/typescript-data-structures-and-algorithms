@@ -4,7 +4,7 @@ A from-first-principles curriculum mirroring the canonical C repository's 27-lea
 
 ## Taxonomy
 
-src/ contains the same 27 leaf paths as ../c-data-structures-and-algorithms/src/, including fixed and resizable separate-chaining hash tables.
+src/ contains the same 27 leaf paths as ../c-data-structures-and-algorithms/src/, including one separate-chaining hash table with fixed and resizing set policies and the GraphView graph contract at data-structures/graphs/graph-view.
 
 ## Commands
 

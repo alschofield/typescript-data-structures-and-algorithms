@@ -6,6 +6,6 @@ describe("Adjacency Matrix", () => {
     expect(AdjacencyMatrix).toBeDefined();
   });
 
-  it.todo("covers constructor(vertexCount, directed), addEdge(from, to), removeEdge(from, to), hasEdge(from, to), neighbors(vertex), vertexCount, edgeCount");
+  it.todo("covers create(directed), addNode(value), stable dense indexes, handle-based weighted edges, and GraphView index adaptation");
   it.todo("covers contract edge cases and complexity invariants");
 });

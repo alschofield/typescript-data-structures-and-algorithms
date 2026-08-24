@@ -6,6 +6,6 @@ describe("Depth-First Search", () => {
     expect(depthFirstSearch).toBeDefined();
   });
 
-  it.todo("covers depthFirstSearch(graph, source): number[] | undefined");
+  it.todo("covers depthFirstSearch(graph: GraphView, source: number): number[] | undefined and ignores edge weights");
   it.todo("covers contract edge cases and complexity invariants");
 });

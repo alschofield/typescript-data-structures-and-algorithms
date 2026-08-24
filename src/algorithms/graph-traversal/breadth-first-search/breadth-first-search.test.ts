@@ -6,6 +6,6 @@ describe("Breadth-First Search", () => {
     expect(breadthFirstSearch).toBeDefined();
   });
 
-  it.todo("covers breadthFirstSearch(graph, source): number[] | undefined");
+  it.todo("covers breadthFirstSearch(graph: GraphView, source: number): number[] | undefined and ignores edge weights");
   it.todo("covers contract edge cases and complexity invariants");
 });

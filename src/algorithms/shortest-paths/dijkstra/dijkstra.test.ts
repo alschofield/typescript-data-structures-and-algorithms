@@ -6,6 +6,6 @@ describe("Dijkstra", () => {
     expect(dijkstra).toBeDefined();
   });
 
-  it.todo("covers dijkstra(graph, source): { distances, parents } | undefined");
+  it.todo("covers dijkstra(graph: GraphView, source: number): DijkstraResult | undefined using edge weights and index-keyed outputs");
   it.todo("covers contract edge cases and complexity invariants");
 });

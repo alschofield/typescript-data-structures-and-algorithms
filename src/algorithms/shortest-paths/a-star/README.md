@@ -6,11 +6,11 @@ Order the frontier by g(n) + h(n), cost so far plus an admissible remaining-cost
 
 ## Required API
 
-Implement aStar with: aStar(graph, source, goal, heuristic): number[] | undefined. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+Implement `aStar<T>(graph: GraphView<T>, source: NodeHandle, goal: NodeHandle, heuristic: (node: NodeHandle) => number): NodeHandle[] | undefined`.
 
 ## Contract
 
-- Require non-negative weights. With zero heuristic, match Dijkstra behavior. Resolve frontier ties deterministically, return an optimal source-to-goal path for admissible heuristics, and return undefined when unreachable. Do not use a library priority queue.
+- Consume dynamic GraphView weighted neighbors. Reject invalid or foreign source/goal handles and require non-negative weights. With zero heuristic, match Dijkstra behavior. Resolve frontier ties deterministically, return an optimal source-to-goal handle path for admissible heuristics, and return undefined when unreachable. Do not use a library priority queue.
 - Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
 
 ## Complexity Targets

@@ -6,6 +6,6 @@ describe("A-Star", () => {
     expect(aStar).toBeDefined();
   });
 
-  it.todo("covers aStar(graph, source, goal, heuristic): number[] | undefined");
+  it.todo("covers aStar(graph: GraphView, source, goal: number, heuristic): number[] | undefined using edge weights");
   it.todo("covers contract edge cases and complexity invariants");
 });
