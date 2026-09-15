@@ -1,18 +1,18 @@
 # Prefix Trie
 
-## How It Works
+## Public Contract
 
-A character tree where root-to-node paths spell prefixes and marked nodes spell stored keys.
+`PrefixTrie` exposes `insert(key)`, `contains(key)`, `startsWith(prefix)`, `remove(key)`, and `size`.
 
-## Required API
+- The current tests do not declare parameter/return types, empty-string behavior, duplicate policy, invalid-input behavior, or property-versus-method form for `size`.
 
-Implement PrefixTrie with: insert(key), contains(key), startsWith(prefix), remove(key), size. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- `null` and `undefined` key/prefix handling is not specified. Do not silently coerce them to strings or document an error mode without implementation evidence.
+- Keys are strings only if the eventual TypeScript signatures say so; character/Unicode normalization and case handling are likewise unspecified.
+- Insert/remove mutate the trie. Tests must establish duplicate effects, removal/pruning behavior, size changes, and whether any returned values expose mutable references.
 
-- Duplicate insertion is idempotent. contains matches whole keys; startsWith accepts the empty prefix. remove fails cleanly for absent keys and prunes only now-unused nodes. Do not use a library trie/map for child storage.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- insert, contains, startsWith, remove O(m) for key length; O(total stored characters) space in the worst case.
+- For string-like keys, the conventional target is O(m) time per operation, where m is the key/prefix length.
+- Verify empty input, prefix versus whole-key behavior, duplicate insert/remove, shared prefixes, nullish invalid inputs, size consistency, and reference/mutation behavior.

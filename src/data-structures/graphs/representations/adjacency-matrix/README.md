@@ -1,18 +1,19 @@
 # Adjacency Matrix
 
-## How It Works
+## Public Contract
 
-A dynamically grown N by N weighted edge grid indexed by node-handle indexes; the dense graph representation.
+The visible test contract requires `AdjacencyMatrix` with `create(directed)`, `addNode(value)`, stable dense indexes, handle-based weighted edges, and `GraphView` index adaptation.
 
-## Required API
+- Exact TypeScript signatures, node-handle type, edge methods, return values, and error behavior are not declared by the current tests.
+- GraphView adaptation must expose dense numeric vertex indexes rather than representation-specific handles.
 
-Implement `AdjacencyMatrix<T>` with: `create(directed)`, `addNode(value): NodeHandle`, `findNode(value): NodeHandle | undefined`, `nodeAt(index): NodeHandle | undefined`, `nodeValue(node): T | undefined`, `addEdge(from: NodeHandle, to: NodeHandle, weight)`, `removeEdge`, `hasEdge`, `neighbors(node)`, `nodeCount`, `edgeCount`, and `asGraphView(): GraphView<T>`. `neighbors(node)` yields deterministic `{ node: NodeHandle, weight: number }` edges.
+## Safety And Semantics
 
-## Contract
+- Node indexes and weighted-edge values need finite-number validation before matrix addressing or storage.
+- Nullish node values, invalid/foreign handles, duplicate edges, self-loops, directedness behavior, and reference ownership are unverified.
+- Mutations must preserve dense-index stability. Tests must establish graph-view liveness and neighbor-output ownership.
 
-- `create` starts empty; `addNode` returns a stable graph-local handle. `nodeAt` uses insertion order and `findNode` locates a value. Reject foreign/invalid handles and non-finite weights. Fresh cells are clear. Undirected mutations preserve symmetry and weight. Duplicate adds and absent removes are clean no-ops. Neighbor iteration scans the full row. `asGraphView()` exposes dynamic node lookup and weighted handle iteration without representation details.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- addNode O(N^2); add/remove/has O(1); neighbor iteration O(N); full traversal O(N^2); O(N^2) space.
+- A conventional adjacency matrix uses O(V^2) storage, O(1) edge lookup/update, and O(V) neighbor scanning.
+- Verify structural values, stable dense indexes, matrix growth, weighted edges, invalid numeric values, directedness once defined, graph-view adapter equivalence, and mutation/reference semantics.

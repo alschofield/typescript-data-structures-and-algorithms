@@ -1,18 +1,20 @@
 # Dijkstra
 
-## How It Works
+## Public Contract
 
-Repeatedly settle the lowest tentative distance and relax its non-negative weighted outgoing edges.
+`dijkstra(graph: GraphView, source: number): DijkstraResult | undefined`
 
-## Required API
+- `GraphView` is structural and uses dense numeric vertex indexes.
+- The visible test contract says `DijkstraResult` uses index-keyed outputs, but does not declare its member names or shapes.
+- `undefined` is the documented absence result; no `null` result is specified.
 
-Implement `dijkstra<T>(graph: GraphView<T>, source: NodeHandle): DijkstraResult | undefined`, where `DijkstraResult` exposes `distance(node): number | undefined` and `parent(node): NodeHandle | undefined`.
+## Safety And Semantics
 
-## Contract
+- Validate `source` as a finite integer in `[0, graph.vertexCount)`. Distances and weights require explicit finite-number rules before arithmetic.
+- The test contract requires use of edge weights, but does not specify negative/non-finite-weight behavior, unreachable-value representation, tie breaking, graph mutation, or output ownership.
+- Do not document a result accessor, parent representation, priority queue, or error mode without implementation evidence.
 
-- Consume dynamic GraphView weighted neighbors to relax edges. Reject negative weights and invalid or foreign source handles. Unreachable nodes have no distance. Parent handles reconstruct shortest paths. Support cycles, parallel edges, and self-loops. Do not use a library priority queue.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- O((V + E) log V) time with a binary heap and O(V) auxiliary space.
+- A binary-heap implementation conventionally targets O((V + E) log V) time and O(V) auxiliary space.
+- Verify invalid sources, weighted paths, zero-weight edges, disconnected graphs, number safety, index-keyed result shape, and graph/reference preservation.

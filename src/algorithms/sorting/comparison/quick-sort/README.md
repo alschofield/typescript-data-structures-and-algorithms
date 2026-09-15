@@ -1,18 +1,19 @@
 # Quick Sort
 
-## How It Works
+## Public Contract
 
-Partition around a defensively chosen pivot, then recursively sort both partitions.
+`quickSort<T>(items, compare): boolean | void`
 
-## Required API
+- `T` is structural and ordering is comparator-defined.
+- The current test contract does not define return meaning, partition policy, stability, or mutation behavior.
 
-Implement quickSort<T> with: quickSort(items, compare): boolean | void. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Nullish inputs, invalid comparators, equal-item order, and handling of duplicate-heavy input are unverified.
+- If sorting is in place, preserve the container and stored reference identities; otherwise document the returned container once implemented.
+- Partition bounds must remain finite integral indexes and must shrink to guarantee termination.
 
-- Sort in place ascending; stability is not required. Use median-of-three or randomized pivots, not a fixed first/last pivot. All-equal and duplicate inputs must remain correct. Do not use built-in sorting.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best/average O(n log n), worst O(n^2), expected O(log n) recursion space.
+- The conventional target is O(n log n) average time, O(n^2) worst case, and logarithmic expected recursion space; the implementation must verify its own pivot strategy.
+- Verify empty/singleton, sorted/reverse-sorted, all-equal and duplicate-heavy inputs, structural objects, termination, return meaning, and mutation/reference behavior.

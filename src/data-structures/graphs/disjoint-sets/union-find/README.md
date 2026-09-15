@@ -1,18 +1,18 @@
 # Union-Find
 
-## How It Works
+## Public Contract
 
-A dense-index disjoint-set forest with parent pointers, path compression, and union by rank or size.
+`UnionFind` exposes `constructor(elementCount)`, `find(element)`, `union(a, b)`, `connected(a, b)`, and `setCount`.
 
-## Required API
+- Elements are implied numeric indexes, but the visible tests do not declare exact parameter/return types, index range, invalid-input behavior, or property-versus-method form for `setCount`.
 
-Implement UnionFind with: constructor(elementCount), find(element), union(a, b), connected(a, b), setCount. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- `elementCount`, `element`, `a`, and `b` need finite-integer/range validation before indexing parent storage.
+- The current tests do not state whether invalid indexes throw, return optional results, or no-op; `null` and `undefined` are not documented error values.
+- `union` mutates connectivity. Tests must establish representative stability, no-op behavior for already-connected elements, and `setCount` changes.
 
-- Each element begins in a singleton set. Reject invalid indexes. Unioning an existing set is a no-op; successful union decreases setCount by one. Representatives may change, so callers rely only on equality.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- find, union, connected amortized O(alpha(n)); construction O(n); O(n) parent and rank/size storage.
+- With path compression and union by rank/size, conventional targets are O(alpha(n)) amortized `find`/`union`/`connected` and O(n) construction/storage.
+- Verify zero/invalid counts, invalid numeric indexes, singleton and repeated unions, transitive connectivity, set-count semantics, and representative equality rather than a specific root.

@@ -1,18 +1,19 @@
 # Singly Linked List
 
-## How It Works
+## Public Contract
 
-A node chain with one forward link and a head pointer.
+`SinglyLinkedList<T>` exposes `pushFront`, `pushBack`, `popFront`, `popBack`, `get`, `insert`, `remove`, `size`, and `isEmpty`.
 
-## Required API
+- `T` is structural and inserted object values retain reference identity unless implementation states otherwise.
+- The visible tests do not declare parameter/return types, index bounds, empty behavior, or property-versus-method forms.
 
-Implement SinglyLinkedList<T> with: pushFront(item), pushBack(item), popFront(), popBack(), get(index), insert(index, item), remove(index), size, isEmpty. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Index arguments need explicit finite-integer and bounds validation before traversal; `undefined` and `null` cannot be assumed to mean absence because they may be valid `T` values.
+- The current contract does not say whether invalid indexes throw, return optional results, or no-op.
+- Mutations must preserve size and valid links; verify reference identity for removed and retrieved objects.
 
-- Indexes are [0, size); insert also accepts size. Failed operations preserve the list. Removing the final node leaves a valid empty list. Stored values remain caller-owned.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- pushFront, popFront, size, isEmpty O(1); all other operations O(n); O(n) nodes with one link each.
+- Conventional singly linked-list targets are O(1) front insertion/removal and O(n) indexed, back, and tail-removal operations without a tail node.
+- Verify empty/singleton transitions, invalid numeric indexes, front/back order, insertion/removal boundaries, nullish values if supported, and reference identity.

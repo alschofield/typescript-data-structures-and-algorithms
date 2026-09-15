@@ -1,18 +1,20 @@
 # A-Star
 
-## How It Works
+## Public Contract
 
-Order the frontier by g(n) + h(n), cost so far plus an admissible remaining-cost estimate.
+`aStar(graph: GraphView, source, goal: number, heuristic): number[] | undefined`
 
-## Required API
+- `GraphView` is structural and index-based; `source`, `goal`, and returned path members are dense numeric vertex indexes.
+- `undefined` is the documented no-result value. The test scaffold does not declare the heuristic type beyond its name.
+- Edge weights are explicitly part of the computation.
 
-Implement `aStar<T>(graph: GraphView<T>, source: NodeHandle, goal: NodeHandle, heuristic: (node: NodeHandle) => number): NodeHandle[] | undefined`.
+## Safety And Semantics
 
-## Contract
+- Validate source and goal as finite integers in range. Heuristic and edge-weight values need finite-number rules before addition and comparison.
+- The visible contract does not specify negative/non-finite weights, heuristic admissibility/consistency, tie breaking, unreachable behavior beyond `undefined`, mutation, or output ownership.
+- Do not add a path-node handle API, result object, or error behavior absent from implementation/tests.
 
-- Consume dynamic GraphView weighted neighbors. Reject invalid or foreign source/goal handles and require non-negative weights. With zero heuristic, match Dijkstra behavior. Resolve frontier ties deterministically, return an optimal source-to-goal handle path for admissible heuristics, and return undefined when unreachable. Do not use a library priority queue.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- Worst case O((V + E) log V) time and O(V) auxiliary space.
+- With a binary heap, the conventional worst-case target is O((V + E) log V) time and O(V) auxiliary space.
+- Verify invalid indexes, source-equals-goal, unreachable paths, weighted alternatives, zero heuristic, numeric safety, and graph/reference preservation.

@@ -1,18 +1,19 @@
 # Selection Sort
 
-## How It Works
+## Public Contract
 
-Repeatedly select the minimum remaining item and swap it into the sorted prefix.
+`selectionSort<T>(items, compare): boolean | void`
 
-## Required API
+- `T` is structural and ordering is comparator-defined.
+- The visible contract does not define the boolean result or whether the sequence is mutated.
 
-Implement selectionSort<T> with: selectionSort(items, compare): boolean | void. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Nullish inputs, comparator failures, comparator result conventions, and equal-item ordering are not specified by the current code/tests.
+- Mutation and reference identity must be explicitly tested. Do not claim stability unless the implemented swap policy proves it.
+- Numeric loop indexes must remain integral and within `[0, items.length]`.
 
-- Sort in place ascending with at most n-1 swaps. The classic swap version is not stable. Do not use built-in sorting.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best/average/worst O(n^2), O(1) extra space.
+- The conventional target is O(n^2) comparisons, O(1) auxiliary space, and at most n - 1 placement swaps.
+- Verify empty/singleton, sorted/reverse-sorted, duplicates, structural objects, return meaning, order, and input/reference mutation behavior.

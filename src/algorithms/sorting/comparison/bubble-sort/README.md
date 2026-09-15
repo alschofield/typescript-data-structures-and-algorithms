@@ -1,18 +1,20 @@
 # Bubble Sort
 
-## How It Works
+## Public Contract
 
-Adjacent out-of-order swaps sweep the largest remaining item to the unsorted tail.
+`bubbleSort<T>(items, compare): boolean | void`
 
-## Required API
+- `T` is structural and ordering is comparator-defined.
+- The `boolean | void` result is the only visible return contract; its meaning is not yet specified.
+- The test scaffold does not state whether sorting is in place or returns another sequence.
 
-Implement bubbleSort<T> with: bubbleSort(items, compare): boolean | void. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Nullish inputs, comparator failures, comparator result conventions, stability, and the treatment of equal elements are unverified.
+- If the implementation mutates `items`, it must retain the sequence container and the stored object references; tests must state and verify that decision.
+- Do not use a boolean result as an array or numeric value without an explicit implementation contract.
 
-- Sort in place ascending and remain stable by swapping only strictly greater pairs. A zero-swap pass must exit early. Do not use built-in sorting.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best O(n), average/worst O(n^2), O(1) extra space.
+- The conventional target is O(n^2) time, O(1) auxiliary space, and O(n) best case only with an early-exit pass.
+- Verify empty/singleton input, already sorted and reverse-sorted input, duplicates and structural objects, output ordering, stability if promised, return meaning, and mutation/reference semantics.

@@ -1,18 +1,19 @@
 # Doubly Linked List
 
-## How It Works
+## Public Contract
 
-A node chain with forward and backward links plus head and tail pointers.
+`DoublyLinkedList<T>` exposes `pushFront`, `pushBack`, `popFront`, `popBack`, `get`, `insert`, `remove`, `size`, and `isEmpty`.
 
-## Required API
+- `T` is structural and stored objects retain their references unless implementation states otherwise.
+- The test scaffold does not define parameter/return types, index bounds, empty behavior, or property-versus-method forms.
 
-Implement DoublyLinkedList<T> with: pushFront(item), pushBack(item), popFront(), popBack(), get(index), insert(index, item), remove(index), size, isEmpty. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Indexes need finite-integer/bounds validation. `undefined` and `null` cannot be assumed to signal absence if valid values of `T` are permitted.
+- Invalid-operation behavior and mutator return values remain unspecified.
+- Mutations must keep forward/backward links and both ends consistent; tests must verify this through observable operations and reference identity.
 
-- Maintain reciprocal next/prev links. Indexes are [0, size); insert accepts size. Walk indexed operations from the nearer end. Failed operations preserve the list and the final removal clears both ends.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- End operations, size, isEmpty O(1); indexed operations O(n), at most n/2 traversal steps; O(n) nodes with two links.
+- With head and tail pointers, end operations conventionally target O(1); indexed operations are O(n).
+- Verify empty/singleton transitions, front/back operations, index boundaries and invalid numbers, repeated mutation, nullish values if supported, and reference identity.

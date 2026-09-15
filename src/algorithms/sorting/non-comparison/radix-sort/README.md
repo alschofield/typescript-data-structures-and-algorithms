@@ -1,18 +1,18 @@
 # Radix Sort
 
-## How It Works
+## Public Contract
 
-Use stable least-significant-digit counting passes in a fixed radix.
+`radixSort(items): boolean | void`
 
-## Required API
+- The current tests do not declare the element type, supported numeric domain, return meaning, or mutation behavior.
 
-Implement radixSort with: radixSort(items): boolean | void. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Number safety must be explicit: finite integers, sign handling, radix, and maximum supported magnitude are all unspecified.
+- Nullish inputs, invalid values, stability, and output/reference semantics remain unverified.
+- Do not add a comparator, radix option, key extractor, or error mode without an implementation contract.
 
-- Process digits least to most significant. Every digit pass must be stable; preserve overall stability. Do not use built-in sorting.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best/average/worst O(d(n + k)), O(n + k) auxiliary space.
+- For a declared radix and digit count, the conventional target is O(d(n + k)) time and O(n + k) auxiliary space.
+- Verify empty/singleton input, zero, repeated values, domain boundaries, invalid numeric values, stability if promised, return meaning, and mutation/reference behavior.

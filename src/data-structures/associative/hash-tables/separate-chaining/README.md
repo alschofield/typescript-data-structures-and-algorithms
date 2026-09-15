@@ -1,34 +1,19 @@
 # Separate-Chaining Hash Table
 
-## How It Works
+## Public Contract
 
-A hash selects a bucket and each collision bucket is a linked chain. `set`
-preserves the chosen fixed capacity; `setResizing` doubles and rehashes buckets
-before a new entry would exceed a 0.75 load factor.
+`HashTable<K, V>` exposes `constructor(initialCapacity, hash, equals)`, `set`, `setResizing`, `get`, `remove`, `contains`, `size`, `capacity`, and `isEmpty`.
 
-## Required API
+- `K` and `V` are structural. Equality and hashing are caller-defined, so equal keys must have compatible hashes.
+- Tests require zero capacity rejection, fixed capacity for `set`, and resize/rehash before `setResizing` would exceed a 0.75 load factor.
 
-Implement HashTable<K, V> with: constructor(initialCapacity, hash, equals),
-set(key, value), setResizing(key, value), get(key), remove(key), contains(key),
-size, capacity, isEmpty. Use idiomatic TypeScript generics and return values;
-the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- `initialCapacity` must be a positive finite integer. A hash result must be normalized to a finite bucket index; negative, fractional, `NaN`, and infinite results need explicit handling.
+- The visible test establishes zero capacity but not key/value nullability. Implementation tests must define actual TypeScript nullability and error behavior.
+- `set`/`setResizing` mutate stored associations. Verify replacement semantics, retained key/value references, collision behavior, failure atomicity, and whether `get`/`remove` distinguish an absent key from a stored `undefined` value.
 
-- `initialCapacity` must be nonzero. Standard callers use `10`; reject an
-  invalid capacity without creating a table. Keys must not be null; values may
-  be null.
-- Both set methods insert a new key or replace an equal key's value while
-  retaining the first stored key. `set` never changes capacity.
-- `setResizing` checks whether adding a new key would exceed a 0.75 load
-  factor. If so, double capacity and rehash every entry with
-  `hash(key) % newCapacity` before insertion. A failed growth preserves the
-  table, capacity, and result.
-- Absent/null-key lookups and removals do not mutate. Collisions must work.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- set/get/remove/contains expected O(1) with short chains, O(n / capacity) as
-  fixed chains grow, O(n) worst case; setResizing amortized O(1), O(n) when
-  resizing; size/capacity/isEmpty O(1); O(entries + capacity) space.
+- Expected operations are conventionally O(1) with a well-distributed hash; collisions and resize rehashing can make an operation O(n). Storage is O(entries + capacity).
+- Verify invalid capacity/hash outputs, collisions, structural equal keys, `null`/`undefined` handling as typed, replacement, fixed versus resizing capacity, 0.75 threshold, rehash preservation, and reference semantics.

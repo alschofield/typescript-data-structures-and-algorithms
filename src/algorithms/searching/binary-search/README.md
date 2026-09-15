@@ -1,18 +1,20 @@
 # Binary Search
 
-## How It Works
+## Public Contract
 
-An iterative range-halving search over input already sorted ascending by compare.
+`binarySearch<T>(items, key, compare): number | undefined`
 
-## Required API
+- `T` is structural: ordering comes from the caller-provided comparator.
+- The visible test contract does not specify comparator conventions, sorting preconditions, or mutability.
+- `undefined` is the documented not-found result; `null` is not a substitute unless an implemented type says so.
 
-Implement binarySearch<T> with: binarySearch(items, key, compare): number | undefined. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Whether the input must already be sorted, and in which order, is not yet specified by code or tests. The function must not silently document a sort operation.
+- Midpoint and bounds arithmetic must remain finite, integral, and inside the array range.
+- Nullish inputs, malformed comparators, duplicate-match selection, and reference/mutation behavior remain unverified.
 
-- Assume but do not sort or validate the order. Return any matching duplicate index, undefined when missing, and never modify input. Midpoint logic must always shrink safely.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best O(1), average/worst O(log n), O(1) extra space.
+- For sorted random-access input, the expected target is O(log n) time and O(1) auxiliary space.
+- Verify empty and missing input, boundary matches, duplicates, structural objects, safe termination, and preservation of the input reference and order.

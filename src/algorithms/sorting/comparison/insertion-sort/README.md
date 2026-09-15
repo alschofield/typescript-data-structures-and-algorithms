@@ -1,18 +1,19 @@
 # Insertion Sort
 
-## How It Works
+## Public Contract
 
-Grow a sorted prefix by shifting strictly greater items right for each next item.
+`insertionSort<T>(items, compare): boolean | void`
 
-## Required API
+- `T` is structural and the comparator defines order.
+- The current tests specify neither the boolean result's meaning nor in-place versus copied output.
 
-Implement insertionSort<T> with: insertionSort(items, compare): boolean | void. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Nullish inputs, comparator failures, comparator result conventions, and equal-item behavior are unverified.
+- Reference and container mutation semantics must be determined from implementation and tests, not inferred from the algorithm name.
+- Index arithmetic must stay integral and bounded while shifting elements.
 
-- Sort in place ascending and stable: equal items retain their order. Nearly sorted input must be adaptive. Do not use built-in sorting.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best O(n), average/worst O(n^2), O(1) extra space.
+- The conventional target is O(n) best case, O(n^2) average/worst case, and O(1) auxiliary space.
+- Verify empty/singleton, nearly sorted and reverse-sorted inputs, duplicates, structural objects, ordering, stability if promised, return meaning, and reference behavior.

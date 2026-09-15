@@ -1,18 +1,19 @@
 # Queue
 
-## How It Works
+## Public Contract
 
-A FIFO ring buffer with wrapping head and tail indexes, so dequeues never shift elements.
+`Queue<T>` exposes `enqueue(item)`, `dequeue()`, `peek()`, `size`, and `isEmpty`.
 
-## Required API
+- `T` is structural; object values retain reference identity unless implementation says otherwise.
+- The test scaffold does not define return types, constructor arguments, empty-operation behavior, or property-versus-method forms.
 
-Implement Queue<T> with: enqueue(item), dequeue(), peek(), size, isEmpty. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- `undefined` and `null` may be valid stored values unless the type excludes them, so empty-state signaling must be unambiguous and tested.
+- The visible tests do not state whether empty `dequeue`/`peek` throws or returns an optional/sentinel value.
+- Verify FIFO order, size mutation, and reference identity rather than assuming an array or ring-buffer implementation.
 
-- dequeue and peek return the oldest item; dequeue removes it. Empty operations report absence without mutation. Stored values remain caller-owned.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- enqueue amortized O(1); dequeue, peek, size, isEmpty O(1); O(n) contiguous space.
+- The conventional target is amortized O(1) enqueue and O(1) dequeue/peek/size/isEmpty.
+- Verify empty behavior, FIFO order across reuse, nullish values if supported, size consistency, and reference preservation.

@@ -1,18 +1,20 @@
 # Depth-First Search
 
-## How It Works
+## Public Contract
 
-Traverse any GraphView as far as possible down each branch before backtracking, using a stack or recursion.
+`depthFirstSearch(graph: GraphView, source: number): number[] | undefined`
 
-## Required API
+- `GraphView` is structural and index-based. `source` and every returned value are dense vertex indexes.
+- `undefined` is the documented absence result; `null` is not an interchangeable absence value.
+- Edge weights are explicitly ignored.
 
-Implement `depthFirstSearch<T>(graph: GraphView<T>, source: NodeHandle): NodeHandle[] | undefined`.
+## Safety And Semantics
 
-## Contract
+- `source` must be a finite integer in `[0, graph.vertexCount)` before it is used as an index.
+- The scaffold does not specify traversal order, recursion versus an explicit stack, nullish graph behavior, or output/container mutation semantics.
+- Any visited state belongs to the traversal, not the input graph; stored numeric vertex indexes must not be confused with `undefined`.
 
-- Visit each reachable node once using a visited-handle structure, leave graph unchanged, reject invalid or foreign source handles, and handle cycles, self-loops, and disconnected graphs. Accept dynamic GraphView adapters and ignore every edge weight. Return handles in visit order. Understand both recursive and explicit-stack forms; do not use a library stack.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- O(V + E) time and O(V) auxiliary space.
+- The conventional target is O(V + E) time and O(V) auxiliary space.
+- Verify invalid sources, empty/disconnected/cyclic/self-loop graphs, ignored weights, order if implemented, and no graph mutation.

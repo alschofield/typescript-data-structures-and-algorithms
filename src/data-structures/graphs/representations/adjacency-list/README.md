@@ -1,18 +1,19 @@
 # Adjacency List
 
-## How It Works
+## Public Contract
 
-One weighted outgoing-edge collection per dynamically added node; the sparse graph representation.
+The visible test contract requires `AdjacencyList` with `create(directed)`, `addNode(value)`, stable dense indexes, handle-based weighted edges, and `GraphView` index adaptation.
 
-## Required API
+- The test does not declare the exact TypeScript signatures, node-handle type, edge methods, lookup methods, return values, or error behavior.
+- `GraphView` adaptation must use dense numeric vertex indexes rather than expose handles.
 
-Implement `AdjacencyList<T>` with: `create(directed)`, `addNode(value): NodeHandle`, `findNode(value): NodeHandle | undefined`, `nodeAt(index): NodeHandle | undefined`, `nodeValue(node): T | undefined`, `addEdge(from: NodeHandle, to: NodeHandle, weight)`, `hasEdge`, `neighbors(node)`, `nodeCount`, `edgeCount`, and `asGraphView(): GraphView<T>`. `neighbors(node)` yields deterministic `{ node: NodeHandle, weight: number }` edges.
+## Safety And Semantics
 
-## Contract
+- Directedness, handles, indexes, and weights need implementation-defined validation. In particular, numbers used as indexes or weights must be finite before storage/traversal.
+- `null`/`undefined` node values, invalid or foreign handles, duplicate edges, self-loops, and reference ownership are not specified by visible tests.
+- Adding nodes/edges is mutating; tests must verify index stability, graph-view liveness, stored value reference identity, and whether neighbor output is a snapshot or view.
 
-- `create` starts empty; `addNode` returns a stable graph-local handle. `nodeAt` uses insertion order and `findNode` locates a value. Reject foreign/invalid handles and non-finite weights. Directedness is fixed at creation; undirected edges are stored in both directions with the same weight. Reject duplicate edges, allow self-loops and negative weights, and return neighbors in deterministic insertion order. `asGraphView()` exposes dynamic node lookup and weighted handle iteration without representation details.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- addNode and addEdge amortized O(1); hasEdge and neighbor iteration O(deg(u)); full traversal O(V + E); O(V + E) space.
+- Conventional adjacency-list targets are O(V + E) storage and O(deg(v)) neighbor iteration; exact update costs depend on the unimplemented API.
+- Verify structural values, directed/undirected behavior once defined, stable dense indexes, weighted edges, invalid numeric values, deterministic graph-view neighbors, and mutation/reference semantics.

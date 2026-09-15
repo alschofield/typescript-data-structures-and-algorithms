@@ -1,18 +1,19 @@
 # Stack
 
-## How It Works
+## Public Contract
 
-An array-backed LIFO collection whose top is the final occupied index.
+`Stack<T>` exposes `push(item)`, `pop()`, `peek()`, `size`, and `isEmpty`.
 
-## Required API
+- `T` is structural; inserted object values are references, not clones, unless implementation states otherwise.
+- The visible tests do not declare method return types, property-versus-method forms, constructor arguments, or empty-operation results.
 
-Implement Stack<T> with: push(item), pop(), peek(), size, isEmpty. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- `undefined` and `null` are potentially valid `T` values unless excluded by the eventual type. Empty-state signaling therefore must be explicit and tested.
+- The tests do not specify whether `pop`/`peek` throw, return a sentinel, or return an optional value on empty state.
+- Mutation is intrinsic to stack operations; verify which calls change size and that returned object references remain identical.
 
-- pop and peek return the most recently pushed item; pop removes it. Empty operations report absence without mutation. Stored values remain caller-owned.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- push amortized O(1); pop, peek, size, isEmpty O(1); O(n) contiguous space.
+- The conventional target is amortized O(1) `push`, O(1) `pop`/`peek`/`size`/`isEmpty`, and O(n) storage.
+- Verify LIFO order, empty behavior, repeated reuse, nullish values if supported, size consistency, and reference identity.

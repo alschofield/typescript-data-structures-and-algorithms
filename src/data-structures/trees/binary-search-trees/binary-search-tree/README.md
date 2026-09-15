@@ -1,18 +1,19 @@
 # Binary Search Tree
 
-## How It Works
+## Public Contract
 
-An unbalanced ordered binary tree: left values compare before a node, right values after it.
+`BinarySearchTree<T>` exposes `constructor(compare)`, `insert`, `find`, `contains`, `remove`, `inOrder`, `size`, and `isEmpty`.
 
-## Required API
+- `T` is structural; the constructor comparator defines ordering and equivalence.
+- The test scaffold does not declare comparator/result conventions, duplicate policy, visitor type, empty/not-found result, or property-versus-method forms.
 
-Implement BinarySearchTree<T> with: constructor(compare), insert(item), find(key), contains(key), remove(key), inOrder(visitor), size, isEmpty. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- `undefined` and `null` may be valid `T` values unless excluded by the eventual type; absence/error signaling must be unambiguous and verified.
+- Comparator results need a documented finite negative/zero/positive convention before branching. Invalid comparator behavior is currently unspecified.
+- Insert/remove mutate the tree. Tests must establish returned-reference semantics, duplicate handling, traversal mutation rules, and root/child replacement behavior.
 
-- Comparison follows negative/zero/positive semantics. Duplicate insertions fail and retain the first item. Removal handles leaves, one child, two children, and root. In-order traversal is strictly ordered and stops if its visitor returns false.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- insert/find/remove/contains O(log n) balanced, O(n) worst case; inOrder O(n); O(n) nodes plus O(height) working space.
+- An unbalanced tree conventionally has O(height) insert/find/contains/remove and O(n) in-order traversal; height can be n.
+- Verify structural objects, empty/not-found behavior, duplicate insertion, removal shapes, comparator safety, sorted traversal, visitor behavior, size, and reference identity.

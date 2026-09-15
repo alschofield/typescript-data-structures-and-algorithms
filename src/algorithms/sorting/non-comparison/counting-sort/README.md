@@ -1,18 +1,19 @@
 # Counting Sort
 
-## How It Works
+## Public Contract
 
-Count keys in [0, keyLimit), prefix-sum their positions, and place items in a stable output buffer.
+`countingSort(items, keyLimit): boolean | void`
 
-## Required API
+- The element type and interpretation of `keyLimit` are not declared by the visible test contract.
+- The `boolean | void` result has no specified meaning, and in-place versus copied output is unverified.
 
-Implement countingSort with: countingSort(items, keyLimit): boolean | void. Use idiomatic TypeScript generics and return values; the required operations remain equivalent to the canonical C curriculum.
+## Safety And Semantics
 
-## Contract
+- Number safety is essential: keys and `keyLimit` need explicit finite-integer/range rules before they can index a count array.
+- Nullish inputs, invalid keys, negative values, overflow-sized allocations, stability, and reference/mutation semantics are not specified yet.
+- Do not claim a key extractor, range convention, or error behavior that is absent from code/tests.
 
-- Use no element comparisons. Validate keys against the declared range. Keep equal keys stable by reverse input placement or equivalent. Do not use built-in sorting.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- best/average/worst O(n + k), O(n + k) auxiliary space.
+- Once a finite key range is specified, the conventional target is O(n + k) time and O(n + k) auxiliary space.
+- Verify empty input, boundary keys, invalid numeric inputs, duplicates and stability if promised, return meaning, and container/reference behavior.

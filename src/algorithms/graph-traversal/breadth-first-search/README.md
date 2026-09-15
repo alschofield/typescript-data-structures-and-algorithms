@@ -1,18 +1,20 @@
 # Breadth-First Search
 
-## How It Works
+## Public Contract
 
-Traverse any GraphView level by level using a FIFO frontier.
+`breadthFirstSearch(graph: GraphView, source: number): number[] | undefined`
 
-## Required API
+- `GraphView` is structural: it must satisfy the shared index-based graph-view contract, not a representation-specific class.
+- `source` and returned vertices are dense numeric indexes. `undefined` is the documented absence result; `null` is not an interchangeable failure result.
+- Edge weights are explicitly ignored.
 
-Implement `breadthFirstSearch<T>(graph: GraphView<T>, source: NodeHandle): NodeHandle[] | undefined`.
+## Safety And Semantics
 
-## Contract
+- Validate that `source` is a finite integer in `[0, graph.vertexCount)` before using it as an index.
+- The visible test contract does not define visit order, nullish graph handling, mutation behavior, or whether the returned array is a fresh container. Do not promise these details yet.
+- Traversal must not mistake `undefined` for a valid vertex index or mutate the graph unless code/tests explicitly permit it.
 
-- Mark node handles visited when enqueued. Visit each reachable node once, leave graph unchanged, reject invalid or foreign source handles, and handle cycles, self-loops, and disconnected graphs. Accept dynamic GraphView adapters and ignore every edge weight. Return handles in visit order. Do not use a library queue.
-- Implement from first principles. Do not substitute Map, Set, built-in sorting/searching, or a library priority queue for the exercise.
+## Complexity And Verification
 
-## Complexity Targets
-
-- O(V + E) time and O(V) auxiliary space with an adjacency list.
+- The conventional target is O(V + E) time and O(V) auxiliary space with adjacency iteration.
+- Verify invalid numeric sources, empty/disconnected/cyclic/self-loop graphs, weighted edges being ignored, deterministic order if implemented, and graph/reference preservation.
