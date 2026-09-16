@@ -2,18 +2,34 @@
 
 ## Public Contract
 
-`Stack<T>` exposes `push(item)`, `pop()`, `peek()`, `size`, and `isEmpty`.
+```ts
+class Stack<T> {
+  push(value: T): boolean
+  pop(): T | undefined
+  peek(): T | undefined
+  size(): number
+  isEmpty(): boolean
+}
+```
 
 - `T` is structural; inserted object values are references, not clones, unless implementation states otherwise.
-- The visible tests do not declare method return types, property-versus-method forms, constructor arguments, or empty-operation results.
+- `push` returns `true` after appending; `pop` and `peek` return `undefined` when empty.
 
 ## Safety And Semantics
 
-- `undefined` and `null` are potentially valid `T` values unless excluded by the eventual type. Empty-state signaling therefore must be explicit and tested.
-- The tests do not specify whether `pop`/`peek` throw, return a sentinel, or return an optional value on empty state.
-- Mutation is intrinsic to stack operations; verify which calls change size and that returned object references remain identical.
+- Mutation is intrinsic to `push` and `pop`; `peek`, `size`, and `isEmpty` do not mutate the stack.
+- Object values retain reference identity; the stack does not clone inserted values.
 
-## Complexity And Verification
+## Complexity Targets
 
 - The conventional target is amortized O(1) `push`, O(1) `pop`/`peek`/`size`/`isEmpty`, and O(n) storage.
-- Verify LIFO order, empty behavior, repeated reuse, nullish values if supported, size consistency, and reference identity.
+
+## Verification
+
+```sh
+npm test -- src/data-structures/linear/stacks/stack/stack.test.ts
+npm run bench -- src/data-structures/linear/stacks/stack/stack.bench.ts
+```
+
+Tests cover LIFO order, non-mutating peek, empty operations, size consistency,
+and reference identity. The benchmark isolates push/pop/peek workloads.

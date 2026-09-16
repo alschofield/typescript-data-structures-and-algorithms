@@ -6,6 +6,26 @@ describe("Stack", () => {
     expect(Stack).toBeDefined();
   });
 
-  it.todo("covers push(item), pop(), peek(), size, isEmpty");
-  it.todo("covers contract edge cases and complexity invariants");
+  it("preserves LIFO order without mutating peek", () => {
+    const stack = new Stack<string>();
+    expect(stack.isEmpty()).toBe(true);
+    expect(stack.push("first")).toBe(true);
+    expect(stack.push("last")).toBe(true);
+    expect(stack.size()).toBe(2);
+    expect(stack.peek()).toBe("last");
+    expect(stack.size()).toBe(2);
+    expect(stack.pop()).toBe("last");
+    expect(stack.pop()).toBe("first");
+    expect(stack.isEmpty()).toBe(true);
+  });
+
+  it("returns undefined from empty top operations and preserves references", () => {
+    const value = { id: 1 };
+    const stack = new Stack<typeof value>();
+    expect(stack.pop()).toBeUndefined();
+    expect(stack.peek()).toBeUndefined();
+    stack.push(value);
+    expect(stack.peek()).toBe(value);
+    expect(stack.pop()).toBe(value);
+  });
 });
