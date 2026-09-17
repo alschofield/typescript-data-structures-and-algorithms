@@ -19,17 +19,8 @@ class HashTable<K, V> {
         this.buckets = [...Array.from({ length: capacity }, () => ([]))];
     }
 
-    private bucketIndex(key: K | undefined, buckets: Array<Array<Node<K, V>>> = this.buckets): number {
-        const hash = this.hash(key);
-        if (!Number.isSafeInteger(hash)) {
-            throw new RangeError("hash must return a safe integer");
-        }
-        // Normalize negative integer hashes into the current bucket range.
-        return ((hash % buckets.length) + buckets.length) % buckets.length;
-    }
-
     set(key: K, value: V): boolean {
-        const bucket = this.bucketIndex(key);
+        const bucket: number = ((this.hash(key) % this.buckets.length) + this.buckets.length) % this.buckets.length;
 
         for(const item of this.buckets[bucket]) {
             if(this.equals(item?.key, key)) {
@@ -57,7 +48,7 @@ class HashTable<K, V> {
 
             for(let bucket of old_buckets) {
                 for(let item of bucket) {
-                    new_buckets[this.bucketIndex(item.key, new_buckets)].push(item);
+                    new_buckets[((this.hash(item.key) % new_buckets.length) + new_buckets.length) % new_buckets.length].push(item);
                 }
             }
 
@@ -68,7 +59,7 @@ class HashTable<K, V> {
     }
 
     get(key:K): V | undefined {
-        const bucket = this.bucketIndex(key);
+        const bucket: number = ((this.hash(key) % this.buckets.length) + this.buckets.length) % this.buckets.length;
 
         for(const item of this.buckets[bucket]) {
             if(this.equals(item?.key, key)) {
@@ -80,7 +71,7 @@ class HashTable<K, V> {
     }
 
     remove(key:K): Node<K, V> | undefined {
-        const bucket = this.bucketIndex(key);
+        const bucket: number = ((this.hash(key) % this.buckets.length) + this.buckets.length) % this.buckets.length;
         let found: Node<K, V> | undefined = undefined;
 
         this.buckets[bucket] = this.buckets[bucket].filter((node: Node<K, V>) => {
@@ -97,7 +88,7 @@ class HashTable<K, V> {
     }
 
     contains(key: K): boolean {
-        const bucket = this.bucketIndex(key);
+        const bucket: number = ((this.hash(key) % this.buckets.length) + this.buckets.length) % this.buckets.length;
 
         for(const item of this.buckets[bucket]) {
             if(this.equals(item?.key, key)) {

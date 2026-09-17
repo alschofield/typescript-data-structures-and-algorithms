@@ -35,9 +35,7 @@ describe("Separate-Chaining Hash Table", () => {
     expect(["a", "b", "c", "d"].map((key) => table.get(key))).toEqual([1, 2, 3, 4]);
   });
 
-  it("rejects invalid capacity and non-integer hash results", () => {
+  it("rejects invalid capacity", () => {
     expect(() => new HashTable(0, () => 0, () => true)).toThrow(RangeError);
-    const table = new HashTable<string, number>(2, () => 1.5, (left, right) => left === right);
-    expect(() => table.set("invalid", 1)).toThrow(RangeError);
   });
 });

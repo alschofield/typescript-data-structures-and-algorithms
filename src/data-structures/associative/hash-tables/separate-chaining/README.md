@@ -9,7 +9,7 @@
 
 ## Safety And Semantics
 
-- `initialCapacity` must be a positive safe integer or construction throws `RangeError`. The hash callback must return a safe integer; negative integers are normalized to valid indexes, while fractional, `NaN`, and infinite values throw `RangeError`.
+- `initialCapacity` must be a positive safe integer or construction throws `RangeError`. The hash callback is required to return a whole safe integer; negative integers are normalized to valid indexes. Fractional, `NaN`, and infinite hash outputs violate the caller contract and are not normalized by the table.
 - `get` returns `V | undefined`; `contains` checks bucket membership directly so a stored `undefined` value remains distinguishable from an absent key.
 - `set`/`setResize` mutate stored associations. Verify replacement semantics, retained key/value references, collision behavior, failure atomicity, and whether `get`/`remove` distinguish an absent key from a stored `undefined` value.
 
@@ -25,6 +25,6 @@ npm run bench -- src/data-structures/associative/hash-tables/separate-chaining/s
 ```
 
 Tests cover collisions, replacement, removal, negative hashes, capacity guards,
-fixed-capacity `set`, resize/rehash behavior, and invalid hash output. The
+fixed-capacity `set`, and resize/rehash behavior. The
 benchmark contrasts well-distributed insertion, collision-chain lookup, and
 resize work.
