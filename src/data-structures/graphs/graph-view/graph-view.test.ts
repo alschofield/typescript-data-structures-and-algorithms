@@ -10,7 +10,7 @@ describe("GraphView", () => {
     const firstToThird: Edge<string> = { from: first, to: third, weight: 1 };
     first.edges.push(firstToSecond, firstToThird);
     const nodes = [first, second, third];
-    const graph: GraphView<string> = {
+    const graph: GraphView<number, string> = {
       directed: () => true,
       nodeCount: () => nodes.length,
       nodeByKey: (key) => nodes.find((node) => node.key === key),
@@ -27,7 +27,7 @@ describe("GraphView", () => {
 
   it("permits an empty edge sequence for a valid isolated node", () => {
     const isolated = graphNode("isolated", 0);
-    const graph: GraphView<unknown> = {
+    const graph: GraphView<number, unknown> = {
       directed: () => false,
       nodeCount: () => 1,
       nodeByKey: (key) => (key === isolated.key ? isolated : undefined),
@@ -40,7 +40,7 @@ describe("GraphView", () => {
   it("retains universal node links and edge endpoint references", () => {
     const root = graphNode({ label: "root" }, 0);
     const child = graphNode({ label: "child" }, 1);
-    const edge: Edge<{ label: string }> = { from: root, to: child, weight: 7 };
+    const edge: Edge<number, { label: string }> = { from: root, to: child, weight: 7 };
     root.children.push(child);
     root.edges.push(edge);
     child.parent = root;
@@ -55,10 +55,10 @@ describe("GraphView", () => {
   it("separates logical undirected edges from traversal neighbors", () => {
     const left = graphNode("left", 0);
     const right = graphNode("right", 1);
-    const logicalEdge: Edge<string> = { from: left, to: right, weight: 3 };
+    const logicalEdge: Edge<number, string> = { from: left, to: right, weight: 3 };
     left.edges.push(logicalEdge);
     right.edges.push({ from: right, to: left, weight: 3 });
-    const graph: UndirectedEdgeGraphView<string> = {
+    const graph: UndirectedEdgeGraphView<number, string> = {
       directed: () => false,
       nodeCount: () => 2,
       nodeByKey: (key) => [left, right].find((node) => node.key === key),
@@ -75,7 +75,7 @@ describe("GraphView", () => {
   });
 });
 
-function graphNode<T>(value: T, key: number): Node<T> {
+function graphNode<K, V>(value: V, key: K): Node<K, V> {
   return {
     key,
     value,

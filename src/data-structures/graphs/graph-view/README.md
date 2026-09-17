@@ -3,35 +3,35 @@
 ## Public Contract
 
 ```ts
-interface GraphView<T> {
+interface GraphView<K, V> {
   directed(): boolean
   nodeCount(): number
-  nodeByKey(key: number): Node<T> | undefined
-  neighbors(node: Node<T>): Iterable<Edge<T>>
+  nodeByKey(key: K): Node<K, V> | undefined
+  neighbors(node: Node<K, V>): Iterable<Edge<K, V>>
 }
 
-interface UndirectedEdgeGraphView<T> extends GraphView<T> {
-  edges(): Iterable<Edge<T>>
+interface UndirectedEdgeGraphView<K, V> extends GraphView<K, V> {
+  edges(): Iterable<Edge<K, V>>
 }
 
-type Node<T> = {
-  key: number
-  value: T
+type Node<K, V> = {
+  key: K
+  value: V
   occurrences: number
   isEndOfWord: boolean
   rank: number
-  next?: Node<T>
-  prev?: Node<T>
-  left?: Node<T>
-  right?: Node<T>
-  parent?: Node<T>
-  children: Node<T>[]
-  edges: Edge<T>[]
+  next?: Node<K, V>
+  prev?: Node<K, V>
+  left?: Node<K, V>
+  right?: Node<K, V>
+  parent?: Node<K, V>
+  children: Node<K, V>[]
+  edges: Edge<K, V>[]
 }
 
-type Edge<T> = {
-  from: Node<T>
-  to: Node<T>
+type Edge<K, V> = {
+  from: Node<K, V>
+  to: Node<K, V>
   weight: number
 }
 ```
@@ -39,7 +39,7 @@ type Edge<T> = {
 `GraphView` is structural: adjacency-list, adjacency-matrix, and imported-graph
 objects need no shared base class, only this method shape.
 
-- `Node<T>` is the shared mutable node shape: its links serve linked lists,
+- `Node<K, V>` is the shared mutable node shape: its links serve linked lists,
   trees, tries, union-find, and graph representations; `edges` supplies the
   adjacency-list graph view.
 - Graph nodes use stable numeric keys. `nodeByKey` returns `undefined` when a

@@ -2,7 +2,7 @@ import type { Node } from "@ds/graphs/graph-view/graph-view";
 
 class SinglyLinkedList<A> {
     // References the first node; the list deliberately keeps no tail pointer.
-    head: Node<A> | undefined;
+    head: Node<undefined, A> | undefined;
     // Tracks the number of nodes so size and emptiness checks avoid traversal.
     length: number;
 
@@ -13,7 +13,7 @@ class SinglyLinkedList<A> {
 
     pushFront(value: A): boolean {
 		// The new node points at the old head before becoming the new front.
-        const node: Node<A> = {
+        const node: Node<undefined, A> = {
             value,
             next: this.head
         };
@@ -25,14 +25,14 @@ class SinglyLinkedList<A> {
 
     pushBack(value: A): boolean {
 		// Without a tail pointer, append walks from head to the final node.
-        const node: Node<A> = {
+        const node: Node<undefined, A> = {
             value,
         };
 
         if (this.head == undefined) {
             this.head = node;
         } else {
-            let temp: Node<A> = this.head;
+            let temp: Node<undefined, A> = this.head;
             while(temp.next) {
                 temp = temp.next;
             }
@@ -44,22 +44,22 @@ class SinglyLinkedList<A> {
         return true;
     }
 
-    popFront(): Node<A> | undefined {
+    popFront(): Node<undefined, A> | undefined {
 		// Advance head once; an empty list remains empty and keeps length at zero.
-        const temp: Node<A> | undefined = this.head;
+        const temp: Node<undefined, A> | undefined = this.head;
         this.head = temp?.next;
         if (temp) this.length--;
         return temp;
     }
 
-    popBack(): Node<A> | undefined {
+    popBack(): Node<undefined, A> | undefined {
 		// Empty and singleton lists are separate because no predecessor exists.
         if (this.length == 0) {
             return undefined;
         }
         
-        let temp: Node<A> | undefined = this.head;
-        let parent: Node<A> | undefined = undefined;
+        let temp: Node<undefined, A> | undefined = this.head;
+        let parent: Node<undefined, A> | undefined = undefined;
 
         if (this.length == 1) {
             return this.popFront();
@@ -77,13 +77,13 @@ class SinglyLinkedList<A> {
         return temp;
     }
 
-    get(index: number): Node<A> | undefined {
+    get(index: number): Node<undefined, A> | undefined {
 		// Valid element indexes are zero through length - 1.
         if (0 > index || index >= this.length) {
             return undefined;
         }
 
-        let temp: Node<A> | undefined = this.head;
+        let temp: Node<undefined, A> | undefined = this.head;
         let n = 0;
         // Move exactly index links so index zero remains the head.
         while(n < index) {
@@ -108,8 +108,8 @@ class SinglyLinkedList<A> {
             return this.pushBack(value);
         }
 
-        let temp: Node<A> | undefined = this.head;
-        let parent: Node<A> | undefined = undefined;
+        let temp: Node<undefined, A> | undefined = this.head;
+        let parent: Node<undefined, A> | undefined = undefined;
         let n: number = 0;
         // Stop with parent before the insertion point and temp at that point.
         while(n < index) {
@@ -118,7 +118,7 @@ class SinglyLinkedList<A> {
             n++;
         }
 
-        const new_node: Node<A> = {
+        const new_node: Node<undefined, A> = {
             value,
             next: temp
         };
@@ -129,7 +129,7 @@ class SinglyLinkedList<A> {
         return true;
     }
 
-    remove(index: number): Node<A> | undefined {
+    remove(index: number): Node<undefined, A> | undefined {
 		// Removal accepts only existing element indexes.
         if (0 > index || index >= this.length) {
             return undefined;
@@ -143,8 +143,8 @@ class SinglyLinkedList<A> {
             return this.popBack();
         }
 
-        let temp: Node<A> | undefined = this.head;
-        let parent: Node<A> | undefined = undefined;
+        let temp: Node<undefined, A> | undefined = this.head;
+        let parent: Node<undefined, A> | undefined = undefined;
         let n: number = 0;
         // Stop with parent before the node being removed.
         while(n < index) {

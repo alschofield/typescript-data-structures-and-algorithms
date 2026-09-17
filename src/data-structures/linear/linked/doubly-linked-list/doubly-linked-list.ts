@@ -2,9 +2,9 @@ import type { Node } from "@ds/graphs/graph-view/graph-view";
 
 class DoublyLinkedList<A> {
     // Holds the first node for constant-time front operations.
-    head: Node<A> | undefined;
+    head: Node<undefined, A> | undefined;
     // Holds the final node for constant-time back operations.
-    tail: Node<A> | undefined;
+    tail: Node<undefined, A> | undefined;
     // Tracks node count without requiring traversal.
     length: number;
 
@@ -16,7 +16,7 @@ class DoublyLinkedList<A> {
 
     pushFront(value: A): boolean {
 		// A new front node points forward to the former head.
-        const node: Node<A> = {
+        const node: Node<undefined, A> = {
             value,
         };
 
@@ -40,7 +40,7 @@ class DoublyLinkedList<A> {
 
     pushBack(value: A): boolean {
 		// A new back node points backward to the former tail.
-        const node: Node<A> = {
+        const node: Node<undefined, A> = {
             value,
         };
 
@@ -62,13 +62,13 @@ class DoublyLinkedList<A> {
         return true;
     }
 
-    popFront(): Node<A> | undefined {
+    popFront(): Node<undefined, A> | undefined {
 		// Empty lists have no front node to return.
         if(this.length == 0) {
             return undefined;
         }
 
-        let temp: Node<A> | undefined = this.head
+        let temp: Node<undefined, A> | undefined = this.head
 
         // A singleton clears both ends; otherwise repair the new head back link.
         if(this.length === 1) {
@@ -84,13 +84,13 @@ class DoublyLinkedList<A> {
         return temp;
     }
 
-    popBack(): Node<A> | undefined {
+    popBack(): Node<undefined, A> | undefined {
 		// Empty lists have no back node to return.
         if(this.length === 0) {
             return undefined;
         }
 
-        let temp: Node<A> | undefined = this.tail;
+        let temp: Node<undefined, A> | undefined = this.tail;
 
         // A singleton clears both ends; otherwise repair the new tail forward link.
         if(this.length === 1) {
@@ -106,13 +106,13 @@ class DoublyLinkedList<A> {
         return temp;
     }
 
-    get(index: number): Node<A> | undefined {
+    get(index: number): Node<undefined, A> | undefined {
 		// Existing element indexes run from zero through length minus one.
         if(0 > index || index >= this.length) {
             return undefined;
         }
 
-        let temp: Node<A> | undefined = undefined;
+        let temp: Node<undefined, A> | undefined = undefined;
         let n: number = 0;
 
         // Begin from the closer end to reduce the number of link traversals.
@@ -148,11 +148,11 @@ class DoublyLinkedList<A> {
             return this.pushBack(value);
         }
 
-        let new_node: Node<A> = {
+        let new_node: Node<undefined, A> = {
             value,
         };
 
-        let temp: Node<A> | undefined = undefined;
+        let temp: Node<undefined, A> | undefined = undefined;
         let n: number = 0;
 
         // Locate the node that will move one position to the right.
@@ -182,7 +182,7 @@ class DoublyLinkedList<A> {
         return true;
     }
 
-    remove(index: number): Node<A> | undefined {
+    remove(index: number): Node<undefined, A> | undefined {
 		// Removal accepts only existing element indexes.
         if(0 > index || index >= this.length) {
             return undefined;
@@ -196,8 +196,8 @@ class DoublyLinkedList<A> {
             return this.popBack();
         }
 
-        let parent: Node<A> | undefined = undefined;
-        let temp: Node<A> | undefined = undefined;
+        let parent: Node<undefined, A> | undefined = undefined;
+        let temp: Node<undefined, A> | undefined = undefined;
         let n: number = 0;
 
         // Traverse from the closer end, then reconnect both neighboring links.
