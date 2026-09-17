@@ -2,18 +2,45 @@
 
 ## Public Contract
 
-`DoublyLinkedList<T>` exposes `pushFront`, `pushBack`, `popFront`, `popBack`, `get`, `insert`, `remove`, `size`, and `isEmpty`.
+```ts
+class DoublyLinkedList<T> {
+  pushFront(value: T): boolean
+  pushBack(value: T): boolean
+  popFront(): Node<T> | undefined
+  popBack(): Node<T> | undefined
+  get(index: number): Node<T> | undefined
+  insert(index: number, value: T): boolean
+  remove(index: number): Node<T> | undefined
+  size(): number
+  isEmpty(): boolean
+}
+```
 
 - `T` is structural and stored objects retain their references unless implementation states otherwise.
-- The test scaffold does not define parameter/return types, index bounds, empty behavior, or property-versus-method forms.
+- `get` and `remove` accept existing indexes `0..size()-1`; `insert` also
+  accepts `size()` to append. Empty and invalid lookups/removals return
+  `undefined`; invalid insertion returns `false`.
 
 ## Safety And Semantics
 
-- Indexes need finite-integer/bounds validation. `undefined` and `null` cannot be assumed to signal absence if valid values of `T` are permitted.
-- Invalid-operation behavior and mutator return values remain unspecified.
-- Mutations must keep forward/backward links and both ends consistent; tests must verify this through observable operations and reference identity.
+- `pushFront`/`pushBack`/`insert` return `true` after mutation. `popFront`,
+  `popBack`, and `remove` return linked nodes rather than raw values.
+- Mutations maintain reciprocal `next`/`prev` links, an undefined `head.prev`,
+  an undefined `tail.next`, and reference identity for stored values.
 
-## Complexity And Verification
+## Complexity Targets
 
-- With head and tail pointers, end operations conventionally target O(1); indexed operations are O(n).
-- Verify empty/singleton transitions, front/back operations, index boundaries and invalid numbers, repeated mutation, nullish values if supported, and reference identity.
+- `pushFront`, `pushBack`, `popFront`, `popBack`, `size`, and `isEmpty` are O(1).
+  Indexed lookup, insertion, and removal are O(n), but traversal starts from
+  the closer end.
+
+## Verification
+
+```sh
+npm test -- src/data-structures/linear/linked/doubly-linked-list/doubly-linked-list.test.ts
+npm run bench -- src/data-structures/linear/linked/doubly-linked-list/doubly-linked-list.bench.ts
+```
+
+Tests cover reciprocal links, head/tail repair, insertion/removal, empty and
+singleton transitions, invalid indexes, and reference identity. Benchmarks
+contrast constant-time end operations with middle lookup.
