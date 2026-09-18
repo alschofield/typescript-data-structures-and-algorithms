@@ -10,7 +10,15 @@ src/ contains the same applicable leaf paths as ../c-data-structures-and-algorit
 
 ## Commands
 
-- npm test runs generated contract scaffolds. They intentionally fail to import until the corresponding user-owned production API exists.
+```sh
+bun install
+bun run test
+bun run bench
+```
+
+`bun run test` runs generated contract scaffolds. Leaves with intentionally
+empty learner-owned source modules will fail until their public API exists;
+target one implemented leaf while building it.
 
 ## Restrictions
 
