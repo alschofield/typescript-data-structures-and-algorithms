@@ -2,19 +2,34 @@
 
 ## Public Contract
 
-`linearSearch<T>(items, key, compare): number | undefined`
+```ts
+LinearSearch(
+  items: Array<any>,
+  target: any,
+  compare: (left: any, right: any) => boolean,
+): any | undefined
+```
 
-- `T` is structural: callers supply a comparison function rather than requiring a nominal item type.
-- The visible test contract does not declare the exact parameter types, comparator result convention, or whether `items` is mutable/readonly.
-- `undefined` is the documented not-found result. `null` is not an interchangeable absence value unless the eventual implementation type explicitly permits it.
+- Callers supply a boolean comparison function rather than relying on a built-in ordering rule.
+- The first matching item is returned; `undefined` reports ordinary not-found absence.
 
 ## Safety And Semantics
 
-- The test scaffold does not specify behavior for `null`, `undefined`, sparse arrays, invalid comparators, or non-finite numeric comparison results; do not promise a behavior until it is implemented and verified.
-- Index results must be safe JavaScript array indexes: consumers must not treat `undefined` as an index.
-- Reference semantics are unspecified. Tests must verify whether the input sequence and its element references are preserved.
+- The input array is scanned in order and is never mutated.
+- Object matches return the original stored reference, not the target object supplied to the comparator.
+- `undefined` can be ambiguous if it is a valid stored item value; callers that need presence distinct from value should use an index-returning API instead.
 
-## Complexity And Verification
+## Complexity Targets
 
-- Linear search normally examines up to every item: O(n) time and O(1) auxiliary space. Treat this as a target until implementation tests enforce it.
-- Verify an empty input, a missing key, a first/middle/last match, duplicate matches, structural objects through `compare`, and input-reference preservation.
+- Best O(1), average and worst O(n) time, and O(1) auxiliary space.
+
+## Verification
+
+```sh
+npm test -- src/algorithms/searching/linear-search/linear-search.test.ts
+npm run bench -- src/algorithms/searching/linear-search/linear-search.bench.ts
+```
+
+Tests cover unsorted input, duplicates, missing and empty input, structural
+comparison, input preservation, and returned reference identity. Benchmarks
+contrast first, middle, last, and missing matches.
