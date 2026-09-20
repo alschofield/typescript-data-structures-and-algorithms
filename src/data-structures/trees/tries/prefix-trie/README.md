@@ -2,17 +2,39 @@
 
 ## Public Contract
 
-`PrefixTrie` exposes `insert(key)`, `contains(key)`, `startsWith(prefix)`, `remove(key)`, and `size`.
+```ts
+class PrefixTrie {
+  insert(word: string): boolean
+  contains(word: string): boolean
+  startsWith(prefix: string): boolean
+  remove(word: string): boolean
+  size(): number
+}
+```
 
-- The current tests do not declare parameter/return types, empty-string behavior, duplicate policy, invalid-input behavior, or property-versus-method form for `size`.
+- `children` is a `Map<string, Node<string, string>>`, so each character lookup
+  is expected O(1). `size` counts distinct terminal words; `char_count` tracks
+  allocated non-root character nodes.
 
 ## Safety And Semantics
 
-- `null` and `undefined` key/prefix handling is not specified. Do not silently coerce them to strings or document an error mode without implementation evidence.
-- Keys are strings only if the eventual TypeScript signatures say so; character/Unicode normalization and case handling are likewise unspecified.
-- Insert/remove mutate the trie. Tests must establish duplicate effects, removal/pruning behavior, size changes, and whether any returned values expose mutable references.
+- Empty string is supported as a root-terminal word. `startsWith("")` is true
+  for every trie; `contains("")` is true only after empty-string insertion.
+- Duplicate insertion increments terminal `occurrences` display metadata without
+  increasing distinct-word `size`; removal deletes the terminal word regardless
+  of occurrence metadata.
+- Removal prunes only nodes no longer needed by another word's prefix.
 
-## Complexity And Verification
+## Complexity Targets
 
-- For string-like keys, the conventional target is O(m) time per operation, where m is the key/prefix length.
-- Verify empty input, prefix versus whole-key behavior, duplicate insert/remove, shared prefixes, nullish invalid inputs, size consistency, and reference/mutation behavior.
+- Insert, contains, startsWith, and remove are O(m) for a word/prefix length m.
+
+## Verification
+
+```sh
+bun run test -- src/data-structures/trees/tries/prefix-trie/prefix-trie.test.ts
+bun run bench -- src/data-structures/trees/tries/prefix-trie/prefix-trie.bench.ts
+```
+
+Tests cover shared prefixes, terminal-versus-prefix behavior, duplicate metadata,
+pruning, empty-string behavior, word count, and character-node count.

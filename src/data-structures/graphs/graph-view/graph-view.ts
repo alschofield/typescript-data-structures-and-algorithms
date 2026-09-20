@@ -39,7 +39,7 @@ type Node<K, V> = {
     parent?: Node<K, V>;
 
     // Owns trie or general-tree child references.
-    children?: Array<Node<K, V>>;
+    children?: Array<Node<K, V>> | Map<K, Node<K, V> | undefined>;
     // Owns outgoing graph edge references for adjacency-list traversal.
     edges?: Array<Edge<K, V>>;
 };
