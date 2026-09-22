@@ -1,4 +1,4 @@
-import type { Node, Edge } from "@ds/graphs/graph-view/graph-view";
+import type { Node } from "@ds/graphs/graph-view/graph-view";
 
 type compareFunc<K, V> = (left: K | V | undefined, right: K | V | undefined) => number;
 
