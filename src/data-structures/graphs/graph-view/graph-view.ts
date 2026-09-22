@@ -19,6 +19,7 @@ type Node<K, V> = {
     key?: K;
     // Retains the caller-owned payload without cloning it.
     value: V;
+    index?: number;
 
     // Counts trie terminal insertions that share this node.
     occurrences?: number;
