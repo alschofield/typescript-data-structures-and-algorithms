@@ -13,4 +13,7 @@ const selectionSort = (items: Array<any>, compare: (left: any, right: any) => nu
     }
 
     return true;
-}
+};
+
+export { selectionSort };
+export default selectionSort;
