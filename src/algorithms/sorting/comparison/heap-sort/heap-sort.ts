@@ -42,7 +42,7 @@ const heapSort = (items: Array<any>, compare: (left: any, right: any) => number)
     }
 
     return true;
-}
+};
 
 export { heapSort };
 export default heapSort;
