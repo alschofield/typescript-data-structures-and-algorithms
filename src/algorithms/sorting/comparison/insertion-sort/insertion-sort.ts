@@ -3,7 +3,15 @@ const insertionSort = (items: Array<any>, compare: (left: any, right: any) => nu
         return true;
     }
 
-    // insertion sort
+    for(let i = 0; i < items.length; i++) {
+        for(let n = i; n-1 >= 0; n--) {
+            if(compare(items[n-1], items[n]) < 0) {
+                items[n-1], items[n] = items[n], items[n-1];
+            } else {
+                break;
+            }
+        }
+    }
 
     return true;
 }
