@@ -1,5 +1,9 @@
 # Adjacency Matrix
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 A square matrix stores an edge or `undefined` at each pair of dense node

@@ -1,5 +1,9 @@
 # Binary Search
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Repeatedly compare the target to the midpoint of an already sorted inclusive

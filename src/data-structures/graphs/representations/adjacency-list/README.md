@@ -1,5 +1,9 @@
 # Adjacency List
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Nodes live in a registry and each node owns an insertion-ordered array of

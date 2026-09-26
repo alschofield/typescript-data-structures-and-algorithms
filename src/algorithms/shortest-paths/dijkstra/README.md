@@ -1,5 +1,9 @@
 # Dijkstra
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Dijkstra repeatedly settles the reachable vertex with the smallest tentative

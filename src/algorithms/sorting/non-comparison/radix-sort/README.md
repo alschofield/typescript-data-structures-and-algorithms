@@ -1,5 +1,9 @@
 # Radix Sort
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Perform stable counting-sort passes over the four bytes of each unsigned

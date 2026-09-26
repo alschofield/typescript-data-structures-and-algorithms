@@ -1,5 +1,9 @@
 # Quick Sort
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Choose the middle value as a pivot, partition into less-than, equal-to, and

@@ -1,12 +1,13 @@
 # Data Structures and Algorithms in TypeScript
 
-A from-first-principles curriculum mirroring the canonical C repository's 26 applicable leaves and behavioral contracts. Production source is intentionally absent for the learner to implement.
+## Purpose and Status
 
-`Array<T>` is the native dynamic-sequence baseline and is not a separate curriculum exercise. It may be used where a topic needs contiguous backing storage.
+A language-specific, from-first-principles data-structures-and-algorithms learning curriculum.
+Target-scaffold repository. Production TypeScript source is intentionally learner-owned.
 
-## Taxonomy
+## Curriculum Coverage
 
-src/ contains the same applicable leaf paths as ../c-data-structures-and-algorithms/src/, including one separate-chaining hash table with fixed and resizing set policies and the GraphView graph contract at data-structures/graphs/graph-view.
+26 applicable topic leaves, including separate-chaining hash-table policies and the GraphView graph contract.
 
 ## Commands
 
@@ -16,10 +17,15 @@ bun run test
 bun run bench
 ```
 
-`bun run test` runs generated contract scaffolds. Leaves with intentionally
-empty learner-owned source modules will fail until their public API exists;
-target one implemented leaf while building it.
+## Conventions
 
-## Restrictions
+`Array<T>` is the allowed native dynamic-sequence baseline when contiguous dynamic storage is needed.
+Implement learning targets directly; do not replace curriculum exercises with language-library containers, sorting/search routines, graph algorithms, or priority queues.
 
-Implement each topic from first principles. Do not replace curriculum exercises with language-library containers, sorting/search routines, graph algorithms, or priority queues. `Array<T>` is the allowed native dynamic-sequence baseline where contiguous backing storage is required.
+## Documentation Contract Template
+
+Each topic leaf README uses these sections: `Implementation Status`, `How It Works`, `Required API`, `Contract`, `Complexity Targets`, and `Verification`. The leaf README is authoritative for that topic; source and tests must preserve its language-specific API syntax and stated behavior.
+
+## Repository-Specific Notes
+
+Production implementations are learner-owned. Documentation and verification scaffolding may describe the required work but do not substitute for it.

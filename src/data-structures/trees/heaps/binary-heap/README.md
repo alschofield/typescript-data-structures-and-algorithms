@@ -1,5 +1,9 @@
 # Binary Heap
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Nodes are stored in an array-backed min heap. `push` bubbles a new node up;

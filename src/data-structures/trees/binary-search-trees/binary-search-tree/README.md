@@ -1,5 +1,9 @@
 # Binary Search Tree
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Comparator-smaller values are linked left and larger values right. In-order

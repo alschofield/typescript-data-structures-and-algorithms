@@ -1,5 +1,9 @@
 # Queue
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 An array appends enqueued values at the back and removes dequeued values from

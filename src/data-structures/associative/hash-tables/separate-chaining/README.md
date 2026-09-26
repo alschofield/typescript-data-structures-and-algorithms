@@ -1,5 +1,9 @@
 # Separate-Chaining Hash Table
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Keys map to an array bucket using the supplied hash function. Each bucket is a

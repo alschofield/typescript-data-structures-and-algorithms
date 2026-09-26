@@ -1,5 +1,9 @@
 # Stack
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 An array stores values in insertion order; its final element is the stack top.

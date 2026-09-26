@@ -1,5 +1,9 @@
 # Bubble Sort
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Repeatedly compare adjacent values and swap inversions. Each completed pass puts

@@ -1,5 +1,9 @@
 # Selection Sort
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 For each position, scan the remaining suffix for its smallest value and swap it

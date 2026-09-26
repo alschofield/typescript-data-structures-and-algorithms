@@ -1,5 +1,9 @@
 # Merge Sort
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Recursively sort copied left and right halves, then merge them. On equality the

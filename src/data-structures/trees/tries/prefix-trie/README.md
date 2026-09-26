@@ -1,5 +1,9 @@
 # Prefix Trie
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Each node represents one character and owns a map of next characters. Terminal

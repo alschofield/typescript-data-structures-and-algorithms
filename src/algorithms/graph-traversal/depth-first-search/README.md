@@ -1,5 +1,9 @@
 # Depth-First Search
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 A LIFO stack follows one branch before backtracking. Neighbor edges are pushed

@@ -1,5 +1,9 @@
 # A-Star
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 A* directs Dijkstra's search toward one goal. For each candidate vertex:

@@ -1,5 +1,9 @@
 # Linear Search
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Scan the array from left to right and return immediately when the supplied

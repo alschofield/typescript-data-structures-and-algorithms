@@ -1,5 +1,9 @@
 # Doubly Linked List
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 The list keeps head and tail nodes, and every internal node links to both

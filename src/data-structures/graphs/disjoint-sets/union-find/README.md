@@ -1,5 +1,9 @@
 # Union-Find
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Each element begins as a singleton node. `find` follows parent links and

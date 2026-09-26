@@ -1,5 +1,9 @@
 # Counting Sort
 
+## Implementation Status
+
+Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+
 ## How It Works
 
 Count each admissible integer in a `limit`-sized frequency array, emit values in
