@@ -3,16 +3,17 @@ const recurse = (items: Array<any>, compare: (left: any, right: any) => number):
         return items;
     }
     
-    const left_side = recurse(items.slice(0, (items.length - 1)/2), compare);
-    const right_side = recurse(items.slice((items.length - 1)/2), compare);
+    const midpoint = Math.floor(items.length / 2);
+    const left_side = recurse(items.slice(0, midpoint), compare);
+    const right_side = recurse(items.slice(midpoint), compare);
 
     const result = [];
 
     for (let i = 0, left_i = 0, right_i = 0; i < items.length; i++) {
-        if(compare(left_side[left_i], right_side[right_i]) <= 0 || right_i >= right_side.length) {
+        if(right_i >= right_side.length || (left_i < left_side.length && compare(left_side[left_i], right_side[right_i]) <= 0)) {
             result.push(left_side[left_i]);
             left_i++;
-        } else if(compare(left_side[left_i], right_side[right_i]) > 0 || left_i >= left_side.length) {
+        } else {
             result.push(right_side[right_i]);
             right_i++;
         }
@@ -26,7 +27,7 @@ const mergeSort = (items: Array<any>, compare: (left: any, right: any) => number
         return true;
     }
 
-    items = recurse(items, compare);
+    items.splice(0, items.length, ...recurse(items, compare));
 
     return true;
 };

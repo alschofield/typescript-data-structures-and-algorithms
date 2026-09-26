@@ -5,11 +5,13 @@ const selectionSort = (items: Array<any>, compare: (left: any, right: any) => nu
 
     for (let i = 0; i < items.length; i++) {
         let smallest_index = i;
-        for (let n = 0; n < items.length; n++) {
-            if(compare(items[smallest_index], items[n]) < 0) smallest_index = n;
+        for (let n = i + 1; n < items.length; n++) {
+            if(compare(items[smallest_index], items[n]) > 0) smallest_index = n;
         }
 
-        items[i], items[smallest_index] = items[smallest_index], items[i];
+        const temporary = items[i];
+        items[i] = items[smallest_index];
+        items[smallest_index] = temporary;
     }
 
     return true;

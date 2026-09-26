@@ -79,7 +79,7 @@ class SinglyLinkedList<A> {
 
     get(index: number): Node<undefined, A> | undefined {
 		// Valid element indexes are zero through length - 1.
-        if (0 > index || index >= this.length) {
+        if (!Number.isInteger(index) || 0 > index || index >= this.length) {
             return undefined;
         }
 
@@ -96,7 +96,7 @@ class SinglyLinkedList<A> {
 
     insert(index: number, value: A): boolean {
 		// Insert permits index length for append, unlike get and remove.
-        if (0 > index || index > this.length) {
+        if (!Number.isInteger(index) || 0 > index || index > this.length) {
             return false;
         }
 
@@ -131,7 +131,7 @@ class SinglyLinkedList<A> {
 
     remove(index: number): Node<undefined, A> | undefined {
 		// Removal accepts only existing element indexes.
-        if (0 > index || index >= this.length) {
+        if (!Number.isInteger(index) || 0 > index || index >= this.length) {
             return undefined;
         }
 

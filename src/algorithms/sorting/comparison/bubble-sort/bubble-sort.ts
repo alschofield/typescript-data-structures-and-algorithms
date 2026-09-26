@@ -9,7 +9,9 @@ const bubbleSort = (items: Array<any>, compare: (left: any, right: any) => numbe
         let candidate_index: number = i;
         for (let n = i; n < l; n++) {
             if(compare(items[candidate_index], items[n]) > 0) {
-                items[candidate_index], items[n] = items[n], items[candidate_index];
+                const temporary = items[candidate_index];
+                items[candidate_index] = items[n];
+                items[n] = temporary;
                 swapped = true;
             }
 

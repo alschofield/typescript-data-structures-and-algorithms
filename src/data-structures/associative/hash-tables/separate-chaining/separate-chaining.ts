@@ -41,6 +41,11 @@ class HashTable<K, V> {
     }
 
     setResize(key: K, value: V): boolean {
+        const bucket = ((this.hash(key) % this.buckets.length) + this.buckets.length) % this.buckets.length;
+        if (this.buckets[bucket].some((item) => this.equals(item.key, key))) {
+            return this.set(key, value);
+        }
+
         // Rehash before a new entry would exceed the configured load factor.
         if((this.count + 1) / this.buckets.length > 3 / 4) {
             const old_buckets: Array<Array<Node<K, V>>> = this.buckets

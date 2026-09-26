@@ -108,7 +108,7 @@ class DoublyLinkedList<A> {
 
     get(index: number): Node<undefined, A> | undefined {
 		// Existing element indexes run from zero through length minus one.
-        if(0 > index || index >= this.length) {
+        if(!Number.isInteger(index) || 0 > index || index >= this.length) {
             return undefined;
         }
 
@@ -136,7 +136,7 @@ class DoublyLinkedList<A> {
 
     insert(index: number, value: A): boolean {
 		// Insertion additionally permits index length, which appends at the back.
-        if(0 > index || index > this.length) {
+        if(!Number.isInteger(index) || 0 > index || index > this.length) {
             return false;
         }
 
@@ -184,7 +184,7 @@ class DoublyLinkedList<A> {
 
     remove(index: number): Node<undefined, A> | undefined {
 		// Removal accepts only existing element indexes.
-        if(0 > index || index >= this.length) {
+        if(!Number.isInteger(index) || 0 > index || index >= this.length) {
             return undefined;
         }
 
