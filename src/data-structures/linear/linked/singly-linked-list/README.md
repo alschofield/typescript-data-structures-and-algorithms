@@ -1,44 +1,48 @@
 # Singly Linked List
 
-## Public Contract
+## How It Works
+
+The list keeps a head node and a length. Each node points only to its next
+neighbor, so operations at the back traverse from the head.
+
+## Required API
 
 ```ts
-class SinglyLinkedList<T> {
-  pushFront(value: T): boolean
-  pushBack(value: T): boolean
-  popFront(): Node<T> | undefined
-  popBack(): Node<T> | undefined
-  get(index: number): Node<T> | undefined
-  insert(index: number, value: T): boolean
-  remove(index: number): Node<T> | undefined
-  size(): number
-  isEmpty(): boolean
+export class SinglyLinkedList<A> {
+  head: Node<undefined, A> | undefined;
+  length: number;
+  constructor();
+  pushFront(value: A): boolean;
+  pushBack(value: A): boolean;
+  popFront(): Node<undefined, A> | undefined;
+  popBack(): Node<undefined, A> | undefined;
+  get(index: number): Node<undefined, A> | undefined;
+  insert(index: number, value: A): boolean;
+  remove(index: number): Node<undefined, A> | undefined;
+  size(): number;
+  isEmpty(): boolean;
 }
 ```
 
-- `T` is structural and inserted object values retain reference identity unless implementation states otherwise.
-- `get` and `remove` accept existing indexes `0..size()-1`; `insert` also
-  accepts `size()` to append. Empty and invalid lookups/removals return
-  `undefined`; invalid insertion returns `false`.
+The module default export is `SinglyLinkedList`.
 
-## Safety And Semantics
+## Contract
 
-- `pushFront`/`pushBack`/`insert` return `true` after mutation. `popFront`,
-  `popBack`, and `remove` return the linked node rather than its raw value.
-- Mutations preserve size and forward links; retrieved and removed values retain
-  their reference identity.
+Mutating operations update this list and retain insertion order. `get` and
+`remove` require an integer index in `[0, size())`; invalid indexes return
+`undefined` without mutation. `insert` additionally accepts `size()` for
+append; invalid indexes return `false`. Empty pops return `undefined`.
+Successful pushes and inserts return `true`; duplicates are distinct nodes.
+Returned nodes are the removed or stored nodes and retain their links as left by
+the operation.
 
 ## Complexity Targets
 
-- Conventional singly linked-list targets are O(1) front insertion/removal and O(n) indexed, back, and tail-removal operations without a tail node.
+O(1) `pushFront`, `popFront`, `size`, and `isEmpty`; O(n) `pushBack`,
+`popBack`, indexed access, insertion, and removal; O(n) storage.
 
 ## Verification
 
 ```sh
-npm test -- src/data-structures/linear/linked/singly-linked-list/singly-linked-list.test.ts
-npm run bench -- src/data-structures/linear/linked/singly-linked-list/singly-linked-list.bench.ts
+bun run test -- src/data-structures/linear/linked/singly-linked-list/singly-linked-list.test.ts
 ```
-
-Tests cover list order, insertion/removal, empty/singleton transitions, invalid
-indexes, size consistency, and reference identity. Benchmarks contrast O(1)
-front insertion with traversal-bound back and middle operations.

@@ -1,16 +1,37 @@
 # Bubble Sort
 
-## Public Contract
+## How It Works
 
-`bubbleSort(items, compare)` sorts `items` in place, returns `true`, and treats
-a positive comparator result as an out-of-order adjacent pair.
+Repeatedly compare adjacent values and swap inversions. Each completed pass puts
+the greatest remaining value at the end; a pass without a swap stops early.
 
-## Safety And Semantics
+## Required API
 
-- The original array and stored object references are retained. Equal elements
-  are not swapped, so this implementation is stable.
+```ts
+export function bubbleSort(
+  items: Array<any>,
+  compare: (left: any, right: any) => number,
+): boolean;
+```
 
-## Complexity And Verification
+The module default export is `{ bubbleSort }`.
 
-- The conventional target is O(n^2) time, O(1) auxiliary space, and O(n) best case only with an early-exit pass.
-- Verify empty/singleton input, already sorted and reverse-sorted input, duplicates and structural objects, output ordering, stability if promised, return meaning, and mutation/reference semantics.
+## Contract
+
+Mutates the original `items` array and returns `true`; it does not allocate a
+replacement array. A positive comparator result swaps the adjacent pair. Empty
+and singleton arrays return `true`. The implementation does not validate
+`compare`, so an invalid comparator follows JavaScript's normal runtime
+behavior. Equal values are not swapped, making the sort stable; ascending order
+follows the comparator, and duplicates are retained.
+
+## Complexity Targets
+
+O(n) best-case time, O(n^2) average and worst-case time, and O(1) auxiliary
+space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/sorting/comparison/bubble-sort/bubble-sort.test.ts
+```

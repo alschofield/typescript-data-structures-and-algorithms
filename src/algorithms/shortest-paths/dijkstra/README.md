@@ -1,20 +1,44 @@
 # Dijkstra
 
-## Public Contract
+## How It Works
 
-`dijkstra(graph: GraphView, source: number): DijkstraResult | undefined`
+Dijkstra repeatedly settles the reachable vertex with the smallest tentative
+distance, then relaxes each outgoing non-negative weighted edge. A priority
+queue may contain stale entries after an improved distance is discovered; skip
+them when popped rather than requiring decrease-key support.
 
-- `GraphView` is structural and uses dense numeric vertex indexes.
-- The visible test contract says `DijkstraResult` uses index-keyed outputs, but does not declare its member names or shapes.
-- `undefined` is the documented absence result; no `null` result is specified.
+## Required API
 
-## Safety And Semantics
+```ts
+dijkstra(graph: GraphView, source: number): DijkstraResult | undefined
+```
 
-- Validate `source` as a finite integer in `[0, graph.vertexCount)`. Distances and weights require explicit finite-number rules before arithmetic.
-- The test contract requires use of edge weights, but does not specify negative/non-finite-weight behavior, unreachable-value representation, tie breaking, graph mutation, or output ownership.
-- Do not document a result accessor, parent representation, priority queue, or error mode without implementation evidence.
+`DijkstraResult` exposes index-keyed shortest distances and predecessor indexes.
+An unreachable vertex has no distance or predecessor. The source distance is
+zero and the source has no predecessor.
 
-## Complexity And Verification
+## Contract
 
-- A binary-heap implementation conventionally targets O((V + E) log V) time and O(V) auxiliary space.
-- Verify invalid sources, weighted paths, zero-weight edges, disconnected graphs, number safety, index-keyed result shape, and graph/reference preservation.
+`graph` is a dense-index graph. `source` must be a finite integer in
+`[0, graph.vertexCount)`. Return `undefined` for an absent/invalid source or
+when the graph cannot be searched. Do not mutate `graph`, its nodes, or edges.
+
+All edge weights must be finite and non-negative. A negative or non-finite
+weight invalidates the search rather than producing a partial result. Parallel
+edges, self-loops, cycles, and zero-weight edges are supported. When multiple
+paths have equal cost, choose a deterministic predecessor based on graph
+neighbor iteration order.
+
+To reconstruct a source-to-target path, collect the target and each predecessor
+until reaching the source, then reverse that separate index array. Do not
+reverse the distance or predecessor maps.
+
+## Complexity Targets
+
+With a binary heap, target O((V + E) log V) time and O(V) auxiliary space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/shortest-paths/dijkstra
+```

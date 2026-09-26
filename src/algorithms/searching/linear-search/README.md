@@ -1,35 +1,36 @@
 # Linear Search
 
-## Public Contract
+## How It Works
+
+Scan the array from left to right and return immediately when the supplied
+equality predicate reports a match.
+
+## Required API
 
 ```ts
-LinearSearch(
+export function LinearSearch(
   items: Array<any>,
   target: any,
   compare: (left: any, right: any) => boolean,
-): any | undefined
+): any | undefined;
 ```
 
-- Callers supply a boolean comparison function rather than relying on a built-in ordering rule.
-- The first matching item is returned; `undefined` reports ordinary not-found absence.
+The module default export is `LinearSearch`.
 
-## Safety And Semantics
+## Contract
 
-- The input array is scanned in order and is never mutated.
-- Object matches return the original stored reference, not the target object supplied to the comparator.
-- `undefined` can be ambiguous if it is a valid stored item value; callers that need presence distinct from value should use an index-returning API instead.
+Does not mutate or reorder `items`. Returns the stored first matching item, not
+the target argument, so object-reference identity is retained. Returns
+`undefined` for an empty array or absent target. Duplicate matches resolve to
+their first occurrence. `compare` is not validated and defines equality; an
+invalid predicate follows JavaScript runtime behavior.
 
 ## Complexity Targets
 
-- Best O(1), average and worst O(n) time, and O(1) auxiliary space.
+O(n) time and O(1) auxiliary space.
 
 ## Verification
 
 ```sh
-npm test -- src/algorithms/searching/linear-search/linear-search.test.ts
-npm run bench -- src/algorithms/searching/linear-search/linear-search.bench.ts
+bun run test -- src/algorithms/searching/linear-search/linear-search.test.ts
 ```
-
-Tests cover unsorted input, duplicates, missing and empty input, structural
-comparison, input preservation, and returned reference identity. Benchmarks
-contrast first, middle, last, and missing matches.

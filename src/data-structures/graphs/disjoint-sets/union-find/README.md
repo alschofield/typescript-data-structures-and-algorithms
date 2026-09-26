@@ -1,19 +1,43 @@
 # Union-Find
 
-## Public Contract
+## How It Works
 
-`UnionFind` manages dense numeric indexes from `0` through `size() - 1`.
-`find` returns the representative node, `union` returns whether it joined two
-previously separate components, and `connected` compares representatives.
+Each element begins as a singleton node. `find` follows parent links and
+compresses the discovered path; `union` links roots by rank.
 
-## Safety And Semantics
+## Required API
 
-- Construction rejects a negative or non-safe-integer count. Lookup operations
-  throw `RangeError` for an invalid index.
-- `setCount` grows the usable range and returns `false` for invalid or shrinking
-  requests, preserving existing component relationships.
+```ts
+export class UnionFind {
+  constructor(capacity: number);
+  find(key: number): Node<number, number>;
+  union(a: number, b: number): boolean;
+  connected(a: number, b: number): boolean;
+  setCount(newCapacity: number): boolean;
+  size(): number;
+}
+```
 
-## Complexity And Verification
+The module default export is `UnionFind`.
 
-- With path compression and union by rank/size, conventional targets are O(alpha(n)) amortized `find`/`union`/`connected` and O(n) construction/storage.
-- `find` uses path compression; `union` uses rank.
+## Contract
+
+Construction throws `RangeError` unless capacity is a non-negative safe integer.
+`find`, `union`, and `connected` throw `RangeError` for any non-safe-integer,
+negative, or out-of-range index. `find` returns the representative node and may
+mutate parent links through path compression. `union` returns `true` only when
+it joins distinct components; `connected` returns whether representatives
+match. `setCount` only grows the universe, returning `false` for invalid or
+smaller capacities and `true` otherwise. Elements are indexes, so duplicate
+element insertion is not an operation.
+
+## Complexity Targets
+
+Amortized O(alpha(n)) `find`, `union`, and `connected`; O(k) to add `k` elements
+with `setCount`; O(n) storage.
+
+## Verification
+
+```sh
+bun run test -- src/data-structures/graphs/disjoint-sets/union-find/union-find.test.ts
+```

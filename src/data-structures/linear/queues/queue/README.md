@@ -1,43 +1,39 @@
 # Queue
 
-## Public Contract
+## How It Works
+
+An array appends enqueued values at the back and removes dequeued values from
+the front.
+
+## Required API
 
 ```ts
-class Queue<T> {
-  enqueue(value: T): boolean
-  dequeue(): T | undefined
-  peek(): T | undefined
-  size(): number
-  isEmpty(): boolean
+export class Queue<A> {
+  constructor();
+  enqueue(value: A): boolean;
+  dequeue(): A | undefined;
+  peek(): A | undefined;
+  size(): number;
+  isEmpty(): boolean;
 }
 ```
 
-- `T` is structural; object values retain reference identity unless implementation says otherwise.
-- `enqueue` returns `true` after appending; `dequeue` and `peek` return `undefined` when empty.
+The module default export is `Queue`.
 
-## Safety And Semantics
+## Contract
 
-- `enqueue` and `dequeue` mutate queue state; `peek`, `size`, and `isEmpty` do not.
-- Object values retain reference identity; the queue does not clone inserted values.
+`enqueue` appends and returns `true`. `dequeue` removes and returns the oldest
+value; `peek` returns that value without mutation. Empty `dequeue` and `peek`
+return `undefined`. Duplicates remain separate entries and are returned in
+first-in, first-out order. The constructor takes no inputs.
 
 ## Complexity Targets
 
-- The current array-backed implementation provides amortized O(1) `enqueue`, O(1) `peek`/`size`/`isEmpty`, and O(n) `dequeue` because `Array.shift()` reindexes remaining values.
-
-## Future Improvement
-
-Keep this direct `push`/`shift` implementation as the baseline FIFO exercise.
-If queue throughput becomes important, replace it with a head-offset array that
-periodically compacts consumed prefixes, or with a circular buffer. Either
-design can make dequeue amortized O(1); do not add a saved front index to this
-implementation without deliberately migrating to one of those representations.
+O(1) amortized `enqueue`, O(n) `dequeue` because it uses `Array.shift()`, O(1)
+`peek`, `size`, and `isEmpty`, and O(n) storage.
 
 ## Verification
 
 ```sh
-npm test -- src/data-structures/linear/queues/queue/queue.test.ts
-npm run bench -- src/data-structures/linear/queues/queue/queue.bench.ts
+bun run test -- src/data-structures/linear/queues/queue/queue.test.ts
 ```
-
-Tests cover FIFO order, non-mutating peek, empty operations, size consistency,
-and reference identity. The benchmark isolates enqueue, dequeue, and peek.

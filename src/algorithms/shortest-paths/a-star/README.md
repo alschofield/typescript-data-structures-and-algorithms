@@ -1,20 +1,52 @@
 # A-Star
 
-## Public Contract
+## How It Works
 
-`aStar(graph: GraphView, source, goal: number, heuristic): number[] | undefined`
+A* directs Dijkstra's search toward one goal. For each candidate vertex:
 
-- `GraphView` is structural and index-based; `source`, `goal`, and returned path members are dense numeric vertex indexes.
-- `undefined` is the documented no-result value. The test scaffold does not declare the heuristic type beyond its name.
-- Edge weights are explicitly part of the computation.
+```text
+g(vertex) = discovered source-to-vertex cost
+h(vertex) = estimated remaining vertex-to-goal cost
+f(vertex) = g(vertex) + h(vertex)
+```
 
-## Safety And Semantics
+The frontier expands the lowest `f` score first. Store score snapshots in each
+queued candidate and skip stale candidates when a better route is found.
 
-- Validate source and goal as finite integers in range. Heuristic and edge-weight values need finite-number rules before addition and comparison.
-- The visible contract does not specify negative/non-finite weights, heuristic admissibility/consistency, tie breaking, unreachable behavior beyond `undefined`, mutation, or output ownership.
-- Do not add a path-node handle API, result object, or error behavior absent from implementation/tests.
+## Required API
 
-## Complexity And Verification
+```ts
+aStar(graph: GraphView, source: number, goal: number, heuristic): number[] | undefined
+```
 
-- With a binary heap, the conventional worst-case target is O((V + E) log V) time and O(V) auxiliary space.
-- Verify invalid indexes, source-equals-goal, unreachable paths, weighted alternatives, zero heuristic, numeric safety, and graph/reference preservation.
+The result is a source-to-goal array of dense vertex indexes, including both
+endpoints. `undefined` means the input is invalid or no path exists.
+
+## Contract
+
+`source` and `goal` must be finite integers in `[0, graph.vertexCount)`.
+`heuristic(vertex)` must return a finite non-negative number. Edge weights must
+also be finite and non-negative. Do not mutate `graph`, its nodes, or edges.
+
+A zero heuristic must behave as Dijkstra and return a lowest-cost path. For
+early termination when the goal is popped, the heuristic must be consistent:
+
+```text
+h(current) <= edgeWeight(current, neighbor) + h(neighbor)
+```
+
+Cycles, parallel edges, self-loops, and zero-weight edges are supported. Record
+a predecessor only when a strictly better `g` score is found; reconstruct a
+successful path by walking predecessors from goal to source, then reversing a
+separate array. Equal-cost ties must be deterministic from neighbor iteration
+order.
+
+## Complexity Targets
+
+With a binary heap, target O((V + E) log V) time and O(V) auxiliary space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/shortest-paths/a-star
+```

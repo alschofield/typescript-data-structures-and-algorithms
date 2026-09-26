@@ -1,35 +1,37 @@
 # Stack
 
-## Public Contract
+## How It Works
+
+An array stores values in insertion order; its final element is the stack top.
+
+## Required API
 
 ```ts
-class Stack<T> {
-  push(value: T): boolean
-  pop(): T | undefined
-  peek(): T | undefined
-  size(): number
-  isEmpty(): boolean
+export class Stack<A> {
+  constructor();
+  push(value: A): boolean;
+  pop(): A | undefined;
+  peek(): A | undefined;
+  size(): number;
+  isEmpty(): boolean;
 }
 ```
 
-- `T` is structural; inserted object values are references, not clones, unless implementation states otherwise.
-- `push` returns `true` after appending; `pop` and `peek` return `undefined` when empty.
+The module default export is `Stack`.
 
-## Safety And Semantics
+## Contract
 
-- Mutation is intrinsic to `push` and `pop`; `peek`, `size`, and `isEmpty` do not mutate the stack.
-- Object values retain reference identity; the stack does not clone inserted values.
+`push` appends and returns `true`. `pop` removes and returns the most recently
+pushed value; `peek` returns that value without mutation. Empty `pop` and
+`peek` return `undefined`. Duplicate values are independent entries and leave
+in last-in, first-out order. The constructor takes no inputs.
 
 ## Complexity Targets
 
-- The conventional target is amortized O(1) `push`, O(1) `pop`/`peek`/`size`/`isEmpty`, and O(n) storage.
+O(1) amortized `push`, O(1) `pop`, `peek`, `size`, and `isEmpty`; O(n) storage.
 
 ## Verification
 
 ```sh
-npm test -- src/data-structures/linear/stacks/stack/stack.test.ts
-npm run bench -- src/data-structures/linear/stacks/stack/stack.bench.ts
+bun run test -- src/data-structures/linear/stacks/stack/stack.test.ts
 ```
-
-Tests cover LIFO order, non-mutating peek, empty operations, size consistency,
-and reference identity. The benchmark isolates push/pop/peek workloads.

@@ -1,47 +1,50 @@
 # Binary Search Tree
 
-## Public Contract
+## How It Works
+
+Comparator-smaller values are linked left and larger values right. In-order
+traversal visits structural nodes in ascending comparator order.
+
+## Required API
 
 ```ts
-class BinarySearchTree<T> {
-  constructor(compare: (left: T | undefined, right: T | undefined) => number)
-  insert(value: T): boolean
-  find(value: T): Node<number, T> | undefined
-  contains(value: T): boolean
-  remove(value: T): boolean
-  inOrder(visit: (node: Node<number, T> | undefined) => boolean): boolean
-  size(): number
-  isEmpty(): boolean
+export class BinarySearchTree<V> {
+  constructor(compare: (left: V | undefined, right: V | undefined) => number);
+  insert(value: V): boolean;
+  _find(value: V): { target: Node<number, V> | undefined; child_direction: string | undefined; parent: Node<number, V> | undefined };
+  find(value: V): Node<number, V> | undefined;
+  contains(value: V): boolean;
+  remove(value: V): boolean;
+  inOrder(visit: (node: Node<number, V> | undefined) => boolean): boolean;
+  size(): number;
+  isEmpty(): boolean;
+  directed(): boolean;
+  nodeCount(): number;
+  nodeByKey(key: number): Node<number, V> | undefined;
+  neighbors(node: Node<number, V>): Iterable<Edge<number, V>>;
 }
 ```
 
-- `T` is structural; the comparator returns a negative/zero/positive number for
-  smaller/equal/larger values.
-- `find` returns a matching node or `undefined`; `contains` returns a boolean;
-  `remove` returns whether a matching node was removed.
+The module default export is `BinarySearchTree`.
 
-## Safety And Semantics
+## Contract
 
-- Inserting an equal value increments its node's `occurrences` metadata without
-  adding a tree node or increasing `size`.
-- `inOrder` visits ascending values and stops early when the visitor returns
-  `false`.
-- Removal preserves BST ordering across leaf, one-child, and two-child cases.
+`insert` returns `true`; a distinct value becomes a structural node with a
+monotonically assigned key, while a comparator-equal value increments the
+retained node's `occurrences`. `find` returns `undefined` when absent, and
+`remove` returns `false` without mutation when absent; removal deletes the
+structural node regardless of occurrences. `inOrder` stops and returns `false`
+when its visitor does. The graph view is directed: `neighbors` yields left then
+right child edges at weight `1`; `nodeByKey` returns `undefined` if absent.
+Comparator and visitor inputs are not validated.
 
 ## Complexity Targets
 
-- An unbalanced tree has O(height) insert/find/contains/remove and O(n)
-  in-order traversal; height can be n.
+O(log n) core operations for balanced shape and O(n) worst case; O(n)
+`nodeByKey` and in-order traversal; O(n) storage.
 
 ## Verification
 
 ```sh
 bun run test -- src/data-structures/trees/binary-search-trees/binary-search-tree/binary-search-tree.test.ts
-bun run bench -- src/data-structures/trees/binary-search-trees/binary-search-tree/binary-search-tree.bench.ts
 ```
-
-Tests cover insertion/find/contains, duplicate occurrence metadata, ordered and
-early-stopped traversal, leaf/one-child/two-child removal, root replacement,
-empty behavior, and size integrity.
-The benchmark covers shuffled insertion, middle lookup, in-order traversal, and
-root removal using a deterministic 1,000-node tree.

@@ -1,46 +1,48 @@
 # Doubly Linked List
 
-## Public Contract
+## How It Works
+
+The list keeps head and tail nodes, and every internal node links to both
+neighbors. Indexed operations begin from the closer end.
+
+## Required API
 
 ```ts
-class DoublyLinkedList<T> {
-  pushFront(value: T): boolean
-  pushBack(value: T): boolean
-  popFront(): Node<T> | undefined
-  popBack(): Node<T> | undefined
-  get(index: number): Node<T> | undefined
-  insert(index: number, value: T): boolean
-  remove(index: number): Node<T> | undefined
-  size(): number
-  isEmpty(): boolean
+export class DoublyLinkedList<A> {
+  head: Node<undefined, A> | undefined;
+  tail: Node<undefined, A> | undefined;
+  length: number;
+  constructor();
+  pushFront(value: A): boolean;
+  pushBack(value: A): boolean;
+  popFront(): Node<undefined, A> | undefined;
+  popBack(): Node<undefined, A> | undefined;
+  get(index: number): Node<undefined, A> | undefined;
+  insert(index: number, value: A): boolean;
+  remove(index: number): Node<undefined, A> | undefined;
+  size(): number;
+  isEmpty(): boolean;
 }
 ```
 
-- `T` is structural and stored objects retain their references unless implementation states otherwise.
-- `get` and `remove` accept existing indexes `0..size()-1`; `insert` also
-  accepts `size()` to append. Empty and invalid lookups/removals return
-  `undefined`; invalid insertion returns `false`.
+The module default export is `DoublyLinkedList`.
 
-## Safety And Semantics
+## Contract
 
-- `pushFront`/`pushBack`/`insert` return `true` after mutation. `popFront`,
-  `popBack`, and `remove` return linked nodes rather than raw values.
-- Mutations maintain reciprocal `next`/`prev` links, an undefined `head.prev`,
-  an undefined `tail.next`, and reference identity for stored values.
+Mutations preserve list order and update `head`, `tail`, and `length`.
+`get` and `remove` accept only integer indexes in `[0, size())`, returning
+`undefined` without mutation for invalid indexes. `insert` also accepts
+`size()` for append and returns `false` for invalid indexes. Empty pops return
+`undefined`; successful insertion methods return `true`. Duplicates are
+separate nodes, and returned nodes retain their links as left by the operation.
 
 ## Complexity Targets
 
-- `pushFront`, `pushBack`, `popFront`, `popBack`, `size`, and `isEmpty` are O(1).
-  Indexed lookup, insertion, and removal are O(n), but traversal starts from
-  the closer end.
+O(1) end pushes, end pops, `size`, and `isEmpty`; O(n) indexed access,
+insertion, and removal; O(n) storage.
 
 ## Verification
 
 ```sh
-npm test -- src/data-structures/linear/linked/doubly-linked-list/doubly-linked-list.test.ts
-npm run bench -- src/data-structures/linear/linked/doubly-linked-list/doubly-linked-list.bench.ts
+bun run test -- src/data-structures/linear/linked/doubly-linked-list/doubly-linked-list.test.ts
 ```
-
-Tests cover reciprocal links, head/tail repair, insertion/removal, empty and
-singleton transitions, invalid indexes, and reference identity. Benchmarks
-contrast constant-time end operations with middle lookup.

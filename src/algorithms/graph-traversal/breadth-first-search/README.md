@@ -1,17 +1,38 @@
 # Breadth-First Search
 
-## Public Contract
+## How It Works
 
-`breadthFirstSearch(graph, source, visit)` returns visited `Node` objects in
-breadth-first order. `source` is resolved through `graph.nodeByKey`; an empty
-graph or missing source returns an empty array. Edge weights are ignored.
+A FIFO queue visits the source, then each reachable breadth level. Nodes are
+marked visited when enqueued, so a node is scheduled at most once.
 
-## Safety And Semantics
+## Required API
 
-- Nodes are marked visited when enqueued, so cycles and converging paths are
-  emitted once. Returning `false` from `visit` stops traversal after that node.
+```ts
+export function breadthFirstSearch(
+  graph: GraphView<any, any>,
+  source: any,
+  visit: (node: Node<any, any>) => boolean,
+): Array<Node<any, any>>;
+```
 
-## Complexity And Verification
+The module default export is `breadthFirstSearch`.
 
-- The conventional target is O(V + E) time and O(V) auxiliary space with adjacency iteration.
-- The traversal does not mutate the graph.
+## Contract
+
+Does not mutate the graph. Returns an empty array for an empty graph or missing
+source. Otherwise, it includes each dequeued reachable node once in breadth
+first order and invokes `visit` after appending that node. A `false` visitor
+result stops traversal and returns the partial path, including the stopping
+node. Edge weights are ignored. Within a breadth level, order follows the
+representation's `neighbors` iteration order. Graph and visitor inputs are not
+validated; thrown errors propagate.
+
+## Complexity Targets
+
+O(V + E) time and O(V) auxiliary space for adjacency-list graphs.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/graph-traversal/breadth-first-search/breadth-first-search.test.ts
+```

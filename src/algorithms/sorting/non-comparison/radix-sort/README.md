@@ -1,16 +1,34 @@
 # Radix Sort
 
-## Public Contract
+## How It Works
 
-`radixSort(items)` sorts unsigned 32-bit safe integers in place using four
-8-bit passes and returns `true`.
+Perform stable counting-sort passes over the four bytes of each unsigned
+32-bit integer, from least to most significant byte.
 
-## Safety And Semantics
+## Required API
 
-- Negative, fractional, and values above `0xffffffff` return `false` without
-  mutating the input. Each digit pass is stable.
+```ts
+export function radixSort(items: Array<number>): boolean;
+```
 
-## Complexity And Verification
+The module default export is `radixSort`.
 
-- For a declared radix and digit count, the conventional target is O(d(n + k)) time and O(n + k) auxiliary space.
-- Verify empty/singleton input, zero, repeated values, domain boundaries, invalid numeric values, stability if promised, return meaning, and mutation/reference behavior.
+## Contract
+
+Accepts only safe integers in the inclusive range `0` through `0xffffffff`.
+Any invalid item returns `false` before mutation. Valid arrays, including empty
+and singleton arrays, are sorted numerically ascending in place and return
+`true`. Duplicates are retained; backward placement in each counting pass makes
+the numeric implementation stable, though equal numbers have no observable
+identity through this API.
+
+## Complexity Targets
+
+O(n) time and O(n) auxiliary space because the digit count and 256-bucket radix
+are fixed.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/sorting/non-comparison/radix-sort/radix-sort.test.ts
+```

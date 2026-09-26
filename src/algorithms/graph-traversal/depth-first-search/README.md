@@ -1,19 +1,38 @@
 # Depth-First Search
 
-## Public Contract
+## How It Works
 
-`depthFirstSearch(graph, source, visit)` returns visited `Node` objects in
-depth-first order. `source` is resolved through `graph.nodeByKey`; an empty
-graph or missing source returns an empty array. Edge weights are ignored.
+A LIFO stack follows one branch before backtracking. Neighbor edges are pushed
+in reverse iteration order so their normal representation order is popped first.
 
-## Safety And Semantics
+## Required API
 
-- Nodes are marked visited when pushed, so cycles and converging paths are
-  emitted once. Neighbor insertion is reversed to preserve iterator order.
-- Returning `false` from `visit` stops traversal after that node without
-  mutating the graph.
+```ts
+export function depthFirstSearch(
+  graph: GraphView<any, any>,
+  source: any,
+  visit: (node: Node<any, any>) => boolean,
+): Array<Node<any, any>>;
+```
 
-## Complexity And Verification
+The module default export is `depthFirstSearch`.
 
-- The conventional target is O(V + E) time and O(V) auxiliary space.
-- Verify invalid sources, empty/disconnected/cyclic/self-loop graphs, ignored weights, order if implemented, and no graph mutation.
+## Contract
+
+Does not mutate the graph. It returns an empty array for an empty graph or
+missing source. Otherwise, it appends and visits each reachable node at most
+once in iterative depth-first order. A `false` visitor result stops after the
+current node was appended and returns the partial path. Edge weights are
+ignored. Sibling order follows `neighbors` iteration order, subject to nodes
+being marked when pushed. Inputs are not validated; thrown graph or visitor
+errors propagate.
+
+## Complexity Targets
+
+O(V + E) time and O(V) auxiliary space for adjacency-list graphs.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/graph-traversal/depth-first-search/depth-first-search.test.ts
+```

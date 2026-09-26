@@ -1,15 +1,35 @@
 # Selection Sort
 
-## Public Contract
+## How It Works
 
-`selectionSort(items, compare)` sorts `items` in place and returns `true`.
+For each position, scan the remaining suffix for its smallest value and swap it
+into the next slot of the sorted prefix.
 
-## Safety And Semantics
+## Required API
 
-- The original array and stored object references are retained. Selection swaps
-  mean equal comparator values are not guaranteed to retain input order.
+```ts
+export function selectionSort(
+  items: Array<any>,
+  compare: (left: any, right: any) => number,
+): boolean;
+```
 
-## Complexity And Verification
+The module default export is `selectionSort`.
 
-- The conventional target is O(n^2) comparisons, O(1) auxiliary space, and at most n - 1 placement swaps.
-- Verify empty/singleton, sorted/reverse-sorted, duplicates, structural objects, return meaning, order, and input/reference mutation behavior.
+## Contract
+
+Sorts the caller's `items` array in ascending comparator order and returns
+`true`, including for empty and singleton arrays. A positive comparator result
+selects a smaller candidate. There is no comparator validation. Duplicates are
+retained, but swapping a selected value can reorder comparator-equal values, so
+the algorithm is not stable.
+
+## Complexity Targets
+
+O(n^2) time in every case and O(1) auxiliary space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/sorting/comparison/selection-sort/selection-sort.test.ts
+```

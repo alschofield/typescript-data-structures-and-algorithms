@@ -1,39 +1,37 @@
 # Binary Search
 
-## Public Contract
+## How It Works
+
+Repeatedly compare the target to the midpoint of an already sorted inclusive
+range, discarding the half that cannot contain a comparator-equal value.
+
+## Required API
 
 ```ts
-BinarySearch(
+export function BinarySearch(
   items: Array<any>,
   target: any,
   compare: (left: any, right: any) => number,
-): any | undefined
+): any | undefined;
 ```
 
-- The comparator returns a negative number when its first value is smaller, a
-  positive number when its first value is larger, and zero when values are equal.
-- The input must already be sorted in the same ascending order described by the
-  comparator. A matching stored item is returned; `undefined` reports absence.
+The module default export is `BinarySearch`.
 
-## Safety And Semantics
+## Contract
 
-- The algorithm must not sort or mutate the input. Object matches return the
-  original stored reference, not the target object supplied to the comparator.
-- Duplicate-match selection is unspecified; any matching duplicate is valid.
-- Nullish inputs and malformed comparator behavior remain unverified.
+Does not mutate or sort `items`; callers must provide an array ordered by the
+same ascending comparator. Returns a stored matching item or `undefined` when
+the range is empty or no match is found. With duplicates, it returns an
+unspecified matching occurrence, not necessarily the first or last. The
+comparator is not validated, and incorrect ordering or comparator behavior
+produces no defined search result.
 
 ## Complexity Targets
 
-- For sorted random-access input, O(log n) time and O(1) auxiliary space.
+O(log n) time and O(1) auxiliary space.
 
 ## Verification
 
 ```sh
-npm test -- src/algorithms/searching/binary-search/binary-search.test.ts
-npm run bench -- src/algorithms/searching/binary-search/binary-search.bench.ts
+bun run test -- src/algorithms/searching/binary-search/binary-search.test.ts
 ```
-
-Tests cover empty and missing input, boundary and middle matches, duplicates,
-structural comparison, input preservation, and returned reference identity.
-Benchmarks compare first, middle, last, and missing targets over 1,024 sorted
-items.

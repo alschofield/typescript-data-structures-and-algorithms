@@ -1,17 +1,37 @@
 # Quick Sort
 
-## Public Contract
+## How It Works
 
-`quickSort(items, compare)` sorts `items` in place and returns `true` after
-partitioning around each midpoint pivot into less-than, equal, and greater-than
-arrays.
+Choose the middle value as a pivot, partition into less-than, equal-to, and
+greater-than arrays, recursively sort the outer partitions, then copy the
+result back to the caller's array.
 
-## Safety And Semantics
+## Required API
 
-- The original array and stored object references are retained. Equal values are
-  collected in encounter order, including duplicate-heavy inputs.
+```ts
+export function quickSort(
+  items: Array<any>,
+  compare: (left: any, right: any) => number,
+): boolean;
+```
 
-## Complexity And Verification
+The module default export is `quickSort`.
 
-- The conventional target is O(n log n) average time, O(n^2) worst case, and logarithmic expected recursion space; the implementation must verify its own pivot strategy.
-- Verify empty/singleton, sorted/reverse-sorted, all-equal and duplicate-heavy inputs, structural objects, termination, return meaning, and mutation/reference behavior.
+## Contract
+
+Mutates `items` in ascending comparator order and returns `true`, including for
+empty and singleton arrays. It preserves the original array object but uses
+temporary partition arrays. `compare` is not validated. Duplicates are kept;
+the equal partition preserves encounter order, and recursive partitions do as
+well, making this implementation stable.
+
+## Complexity Targets
+
+O(n log n) average time, O(n^2) worst-case time, and O(n) auxiliary partition
+space plus recursion space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/sorting/comparison/quick-sort/quick-sort.test.ts
+```

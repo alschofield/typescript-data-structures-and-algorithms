@@ -1,16 +1,33 @@
 # Counting Sort
 
-## Public Contract
+## How It Works
 
-`countingSort(items, keyLimit)` accepts non-negative safe integers in
-`[0, keyLimit)`, sorts the original array in place, and returns `true`.
+Count each admissible integer in a `limit`-sized frequency array, emit values in
+ascending numeric order, and copy them back into the input array.
 
-## Safety And Semantics
+## Required API
 
-- Invalid limits or values return `false` before mutating the input. The method
-  does not support negative, fractional, or out-of-range values.
+```ts
+export function countingSort(items: Array<number>, limit: number): boolean;
+```
 
-## Complexity And Verification
+The module default export is `{ countingSort }`.
 
-- Once a finite key range is specified, the conventional target is O(n + k) time and O(n + k) auxiliary space.
-- Verify empty input, boundary keys, invalid numeric inputs, duplicates and stability if promised, return meaning, and container/reference behavior.
+## Contract
+
+Accepts only a non-negative safe-integer `limit` and non-negative safe-integer
+items satisfying `item < limit`. Invalid `limit` or item values return `false`
+without mutation. Valid inputs, including empty and singleton arrays, sort
+numerically ascending in place and return `true`. Equal numeric values are
+indistinguishable; all duplicate counts are retained. This API does not accept
+records, so it provides no observable stability guarantee.
+
+## Complexity Targets
+
+O(n + limit) time and O(n + limit) auxiliary space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/sorting/non-comparison/counting-sort/counting-sort.test.ts
+```

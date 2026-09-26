@@ -1,16 +1,34 @@
 # Heap Sort
 
-## Public Contract
+## How It Works
 
-`heapSort(items, compare)` builds a max heap according to `compare`, sorts
-`items` in ascending comparator order in place, and returns `true`.
+Build a max heap in `items`, then repeatedly exchange its root with the final
+unsorted slot and sift the new root down.
 
-## Safety And Semantics
+## Required API
 
-- The original array and stored object references are retained. Heap swaps do
-  not guarantee stable ordering for equal values.
+```ts
+export function heapSort(
+  items: Array<any>,
+  compare: (left: any, right: any) => number,
+): boolean;
+```
 
-## Complexity And Verification
+The module default export is `{ heapSort }`.
 
-- The conventional target is O(n log n) time and O(1) auxiliary space for an iterative in-place implementation.
-- Verify empty/singleton, sorted/reverse-sorted, duplicates, structural objects, ordering, return meaning, and mutation/reference behavior.
+## Contract
+
+Sorts `items` ascending in place and returns `true`, including for empty and
+singleton arrays. A positive comparator result denotes the greater value. No
+comparator validation is performed. Duplicates are retained, but heap exchanges
+may reorder comparator-equal values, so order is not stable.
+
+## Complexity Targets
+
+O(n log n) time and O(1) auxiliary space.
+
+## Verification
+
+```sh
+bun run test -- src/algorithms/sorting/comparison/heap-sort/heap-sort.test.ts
+```

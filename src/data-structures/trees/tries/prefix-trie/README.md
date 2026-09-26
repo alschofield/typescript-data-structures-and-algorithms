@@ -1,40 +1,45 @@
 # Prefix Trie
 
-## Public Contract
+## How It Works
+
+Each node represents one character and owns a map of next characters. Terminal
+markers distinguish complete stored words from prefixes; removal prunes unused
+suffixes.
+
+## Required API
 
 ```ts
-class PrefixTrie {
-  insert(word: string): boolean
-  contains(word: string): boolean
-  startsWith(prefix: string): boolean
-  remove(word: string): boolean
-  size(): number
+export class PrefixTrie {
+  constructor();
+  insert(word: string): boolean;
+  contains(word: string): boolean;
+  startsWith(prefix: string): boolean;
+  remove(word: string): boolean;
+  size(): number;
 }
 ```
 
-- `children` is a `Map<string, Node<string, string>>`, so each character lookup
-  is expected O(1). `size` counts distinct terminal words; `char_count` tracks
-  allocated non-root character nodes.
+The module default export is `PrefixTrie`.
 
-## Safety And Semantics
+## Contract
 
-- Empty string is supported as a root-terminal word. `startsWith("")` is true
-  for every trie; `contains("")` is true only after empty-string insertion.
-- Duplicate insertion increments terminal `occurrences` display metadata without
-  increasing distinct-word `size`; removal deletes the terminal word regardless
-  of occurrence metadata.
-- Removal prunes only nodes no longer needed by another word's prefix.
+`insert` returns `true`, creating missing character nodes and increasing
+`size()` only for a newly terminal word. Inserting an existing word increments
+that terminal node's `occurrences` but does not increase `size()`. `contains`
+requires a terminal marker, while `startsWith` accepts any existing path.
+`remove` returns `false` for an absent word or a prefix that is not terminal;
+otherwise it clears the terminal marker, decrements `size()`, and prunes
+unneeded suffix nodes. One removal clears an existing word even if repeated
+inserts incremented `occurrences`. The implementation assumes string inputs;
+invalid runtime values are not handled.
 
 ## Complexity Targets
 
-- Insert, contains, startsWith, and remove are O(m) for a word/prefix length m.
+O(L) time for insert, lookup, prefix lookup, and removal of a word/prefix of
+length `L`; O(total stored character nodes) space.
 
 ## Verification
 
 ```sh
 bun run test -- src/data-structures/trees/tries/prefix-trie/prefix-trie.test.ts
-bun run bench -- src/data-structures/trees/tries/prefix-trie/prefix-trie.bench.ts
 ```
-
-Tests cover shared prefixes, terminal-versus-prefix behavior, duplicate metadata,
-pruning, empty-string behavior, word count, and character-node count.
