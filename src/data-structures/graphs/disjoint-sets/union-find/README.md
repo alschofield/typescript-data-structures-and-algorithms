@@ -2,17 +2,18 @@
 
 ## Public Contract
 
-`UnionFind` exposes `constructor(elementCount)`, `find(element)`, `union(a, b)`, `connected(a, b)`, and `setCount`.
-
-- Elements are implied numeric indexes, but the visible tests do not declare exact parameter/return types, index range, invalid-input behavior, or property-versus-method form for `setCount`.
+`UnionFind` manages dense numeric indexes from `0` through `size() - 1`.
+`find` returns the representative node, `union` returns whether it joined two
+previously separate components, and `connected` compares representatives.
 
 ## Safety And Semantics
 
-- `elementCount`, `element`, `a`, and `b` need finite-integer/range validation before indexing parent storage.
-- The current tests do not state whether invalid indexes throw, return optional results, or no-op; `null` and `undefined` are not documented error values.
-- `union` mutates connectivity. Tests must establish representative stability, no-op behavior for already-connected elements, and `setCount` changes.
+- Construction rejects a negative or non-safe-integer count. Lookup operations
+  throw `RangeError` for an invalid index.
+- `setCount` grows the usable range and returns `false` for invalid or shrinking
+  requests, preserving existing component relationships.
 
 ## Complexity And Verification
 
 - With path compression and union by rank/size, conventional targets are O(alpha(n)) amortized `find`/`union`/`connected` and O(n) construction/storage.
-- Verify zero/invalid counts, invalid numeric indexes, singleton and repeated unions, transitive connectivity, set-count semantics, and representative equality rather than a specific root.
+- `find` uses path compression; `union` uses rank.

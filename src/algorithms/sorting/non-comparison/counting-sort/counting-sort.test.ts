@@ -6,6 +6,16 @@ describe("Counting Sort", () => {
     expect(countingSort).toBeDefined();
   });
 
-  it.todo("covers countingSort(items, keyLimit): boolean | void");
-  it.todo("covers contract edge cases and complexity invariants");
+  it("sorts non-negative safe integers in place", () => {
+    const items = [3, 0, 2, 3, 1];
+    expect(countingSort(items, 4)).toBe(true);
+    expect(items).toEqual([0, 1, 2, 3, 3]);
+  });
+
+  it("rejects invalid limits and keys without mutating the input", () => {
+    const negative = [2, -1];
+    expect(countingSort(negative, 3)).toBe(false);
+    expect(negative).toEqual([2, -1]);
+    expect(countingSort([1], 1)).toBe(false);
+  });
 });

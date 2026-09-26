@@ -2,16 +2,12 @@
 
 ## Public Contract
 
-`selectionSort<T>(items, compare): boolean | void`
-
-- `T` is structural and ordering is comparator-defined.
-- The visible contract does not define the boolean result or whether the sequence is mutated.
+`selectionSort(items, compare)` sorts `items` in place and returns `true`.
 
 ## Safety And Semantics
 
-- Nullish inputs, comparator failures, comparator result conventions, and equal-item ordering are not specified by the current code/tests.
-- Mutation and reference identity must be explicitly tested. Do not claim stability unless the implemented swap policy proves it.
-- Numeric loop indexes must remain integral and within `[0, items.length]`.
+- The original array and stored object references are retained. Selection swaps
+  mean equal comparator values are not guaranteed to retain input order.
 
 ## Complexity And Verification
 

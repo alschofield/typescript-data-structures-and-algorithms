@@ -28,6 +28,7 @@ class Stack<A> {
     }
 
     isEmpty(): boolean {
+        // No stored values means there is no stack top to read or remove.
         return this.stack.length === 0;
     }
 };

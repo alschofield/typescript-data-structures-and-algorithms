@@ -2,25 +2,23 @@ import { bench, describe } from "vitest";
 import { SinglyLinkedList } from "./singly-linked-list";
 
 describe("SinglyLinkedList", () => {
-  bench("pushFront", () => {
-    const list = new SinglyLinkedList<number>();
-    for (let index = 0; index < 1_000; index += 1) list.pushFront(index);
-  });
+  let list: SinglyLinkedList<number>;
 
-  bench("pushBack", () => {
-    const list = new SinglyLinkedList<number>();
+  bench("pushFront 1,000", () => {
+    for (let index = 0; index < 1_000; index += 1) list.pushFront(index);
+  }, { setup: () => { list = new SinglyLinkedList<number>(); } });
+
+  bench("pushBack 1,000", () => {
     for (let index = 0; index < 1_000; index += 1) list.pushBack(index);
-  });
+  }, { setup: () => { list = new SinglyLinkedList<number>(); } });
 
   bench("get middle", () => {
-    const list = listOfSize(1_000);
     for (let index = 0; index < 1_000; index += 1) list.get(500);
-  });
+  }, { setup: () => { list = listOfSize(1_000); } });
 
-  bench("popBack", () => {
-    const list = listOfSize(1_000);
+  bench("popBack 1,000", () => {
     while (!list.isEmpty()) list.popBack();
-  });
+  }, { setup: () => { list = listOfSize(1_000); } });
 });
 
 function listOfSize(size: number): SinglyLinkedList<number> {

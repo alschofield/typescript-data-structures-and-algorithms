@@ -15,18 +15,18 @@ interface UndirectedEdgeGraphView<K, V> extends GraphView<K, V> {
 }
 
 type Node<K, V> = {
-  key: K
+  key?: K
   value: V
-  occurrences: number
-  isEndOfWord: boolean
-  rank: number
+  occurrences?: number
+  isEndOfWord?: boolean
+  rank?: number
   next?: Node<K, V>
   prev?: Node<K, V>
   left?: Node<K, V>
   right?: Node<K, V>
   parent?: Node<K, V>
-  children: Node<K, V>[]
-  edges: Edge<K, V>[]
+  children?: Node<K, V>[] | Map<K, Node<K, V> | undefined>
+  edges?: Edge<K, V>[]
 }
 
 type Edge<K, V> = {
@@ -42,8 +42,8 @@ objects need no shared base class, only this method shape.
 - `Node<K, V>` is the shared mutable node shape: its links serve linked lists,
   trees, tries, union-find, and graph representations; `edges` supplies the
   adjacency-list graph view.
-- Graph nodes use stable numeric keys. `nodeByKey` returns `undefined` when a
-  key is absent. `Edge<T>` preserves endpoint values and its weight.
+- Graph views may choose their own key type. `nodeByKey` returns `undefined`
+  when a key is absent; `Edge<K, V>` preserves endpoint nodes and weight.
 - `neighbors` returns full edges rather than representation-specific handles or
   raw numeric records, so graph algorithms can retain nodes and reconstruct
   useful paths directly.

@@ -2,25 +2,23 @@ import { bench, describe } from "vitest";
 import { BinarySearchTree } from "./binary-search-tree";
 
 describe("BinarySearchTree", () => {
-  bench("insert shuffled", () => {
-    const tree = numberTree();
+  let tree: BinarySearchTree<number>;
+
+  bench("insert 1,000 shuffled", () => {
     for (let index = 1_000; index < 2_000; index += 1) tree.insert(index);
-  });
+  }, { setup: () => { tree = numberTree(); } });
 
   bench("find middle", () => {
-    const tree = numberTree();
     for (let index = 0; index < 1_000; index += 1) tree.find(500);
-  });
+  }, { setup: () => { tree = numberTree(); } });
 
   bench("in-order", () => {
-    const tree = numberTree();
     tree.inOrder(() => true);
-  });
+  }, { setup: () => { tree = numberTree(); } });
 
   bench("remove root", () => {
-    const tree = numberTree();
     tree.remove(500);
-  });
+  }, { setup: () => { tree = numberTree(); } });
 });
 
 function numberTree(): BinarySearchTree<number> {

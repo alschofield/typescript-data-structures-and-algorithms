@@ -1,5 +1,6 @@
 	// Scans items in their existing order without sorting or mutating the input.
 const LinearSearch = (items: Array<any>, target: any, compare: (left: any, right: any) => boolean): any | undefined => {
+    // Inspect each item until the caller-defined equality relation matches.
     for (let item of items) {
 		// The caller owns equality semantics through the supplied comparison function.
         if (compare(item, target)) {

@@ -2,17 +2,16 @@
 
 ## Public Contract
 
-`depthFirstSearch(graph: GraphView, source: number): number[] | undefined`
-
-- `GraphView` is structural and index-based. `source` and every returned value are dense vertex indexes.
-- `undefined` is the documented absence result; `null` is not an interchangeable absence value.
-- Edge weights are explicitly ignored.
+`depthFirstSearch(graph, source, visit)` returns visited `Node` objects in
+depth-first order. `source` is resolved through `graph.nodeByKey`; an empty
+graph or missing source returns an empty array. Edge weights are ignored.
 
 ## Safety And Semantics
 
-- `source` must be a finite integer in `[0, graph.vertexCount)` before it is used as an index.
-- The scaffold does not specify traversal order, recursion versus an explicit stack, nullish graph behavior, or output/container mutation semantics.
-- Any visited state belongs to the traversal, not the input graph; stored numeric vertex indexes must not be confused with `undefined`.
+- Nodes are marked visited when pushed, so cycles and converging paths are
+  emitted once. Neighbor insertion is reversed to preserve iterator order.
+- Returning `false` from `visit` stops traversal after that node without
+  mutating the graph.
 
 ## Complexity And Verification
 

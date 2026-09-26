@@ -2,18 +2,18 @@
 
 ## Public Contract
 
-The visible test contract requires `AdjacencyMatrix` with `create(directed)`, `addNode(value)`, stable dense indexes, handle-based weighted edges, and `GraphView` index adaptation.
-
-- Exact TypeScript signatures, node-handle type, edge methods, return values, and error behavior are not declared by the current tests.
-- GraphView adaptation must expose dense numeric vertex indexes rather than representation-specific handles.
+`new AdjacencyMatrix(directed, compare)` stores keyed nodes in a dense internal
+matrix. `addNode(key, value)` assigns a stable dense `index`; keys need not be
+matrix indexes. `nodeByKey` and `nodeAtKey` resolve nodes by their public key.
 
 ## Safety And Semantics
 
-- Node indexes and weighted-edge values need finite-number validation before matrix addressing or storage.
-- Nullish node values, invalid/foreign handles, duplicate edges, self-loops, directedness behavior, and reference ownership are unverified.
-- Mutations must preserve dense-index stability. Tests must establish graph-view liveness and neighbor-output ownership.
+- `addEdge(from, to, weight)` uses public keys, returns `false` for a missing
+  endpoint or duplicate, and counts undirected pairs once.
+- `neighbors(key, visit)` is the callback API; `neighbors(node)` returns
+  iterable edges for `GraphView` consumers.
 
 ## Complexity And Verification
 
 - A conventional adjacency matrix uses O(V^2) storage, O(1) edge lookup/update, and O(V) neighbor scanning.
-- Verify structural values, stable dense indexes, matrix growth, weighted edges, invalid numeric values, directedness once defined, graph-view adapter equivalence, and mutation/reference semantics.
+- Matrix neighbor iteration follows increasing dense-index order.

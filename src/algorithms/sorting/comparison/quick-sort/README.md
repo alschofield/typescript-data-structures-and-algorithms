@@ -2,16 +2,14 @@
 
 ## Public Contract
 
-`quickSort<T>(items, compare): boolean | void`
-
-- `T` is structural and ordering is comparator-defined.
-- The current test contract does not define return meaning, partition policy, stability, or mutation behavior.
+`quickSort(items, compare)` sorts `items` in place and returns `true` after
+partitioning around each midpoint pivot into less-than, equal, and greater-than
+arrays.
 
 ## Safety And Semantics
 
-- Nullish inputs, invalid comparators, equal-item order, and handling of duplicate-heavy input are unverified.
-- If sorting is in place, preserve the container and stored reference identities; otherwise document the returned container once implemented.
-- Partition bounds must remain finite integral indexes and must shrink to guarantee termination.
+- The original array and stored object references are retained. Equal values are
+  collected in encounter order, including duplicate-heavy inputs.
 
 ## Complexity And Verification
 

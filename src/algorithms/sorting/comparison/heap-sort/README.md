@@ -2,16 +2,13 @@
 
 ## Public Contract
 
-`heapSort<T>(items, compare): boolean | void`
-
-- `T` is structural and ordering is comparator-defined.
-- The visible test contract does not define result meaning, sort direction, stability, or mutation behavior.
+`heapSort(items, compare)` builds a max heap according to `compare`, sorts
+`items` in ascending comparator order in place, and returns `true`.
 
 ## Safety And Semantics
 
-- Nullish inputs, comparator failures, equal-item order, and container/reference semantics are unverified.
-- Heap child/parent calculations must use finite integral indexes and never read beyond the active heap.
-- Do not claim a library heap, heap construction strategy, or returned value without implementation evidence.
+- The original array and stored object references are retained. Heap swaps do
+  not guarantee stable ordering for equal values.
 
 ## Complexity And Verification
 

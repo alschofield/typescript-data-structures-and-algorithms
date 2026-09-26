@@ -3,11 +3,8 @@ import type { Node, Edge } from "@ds/graphs/graph-view/graph-view";
 type compareFunc<V> = (left: V | undefined, right: V | undefined) => number;
 
 class BinarySearchTree<V> {
-    // Root owns the entry point for every tree traversal.
     root: Node<number, V> | undefined;
-    // Count tracks distinct tree nodes; duplicates live in occurrences metadata.
     count: number;
-    // Keys provide stable identity independent of comparator ordering.
     next_key: number;
     compare: compareFunc<V>;
 
@@ -19,14 +16,8 @@ class BinarySearchTree<V> {
     }
 
     insert(value: V): boolean {
-        // Each new distinct value receives the next stable node key.
-        const node: Node<number, V> = {
-            key: this.next_key,
-            value,
-            occurrences: 0,
-        }
-        
-        // The first value becomes the root without a traversal.
+        const node: Node<number, V> = { key: this.next_key, value, occurrences: 0 };
+        // The first distinct value becomes the root without a traversal.
         if(this.count === 0) {
             this.root = node;
             this.count++;
@@ -35,21 +26,17 @@ class BinarySearchTree<V> {
         }
 
         let temp: Node<number, V> = this.root!;
-
-        // Descend only when the needed child already exists.
+        // Descend only while the ordered child needed for this value already exists.
         while(
             (this.compare(temp?.value, node?.value) > 0 && temp?.left !== undefined)
             || (this.compare(temp?.value, node?.value) < 0 && temp?.right !== undefined)
             && (this.compare(temp?.value, node?.value) !== 0)
         ) {
-            if(this.compare(temp?.value, node?.value) > 0) {
-                temp = temp?.left!;
-            } else {
-                temp = temp?.right!;
-            }
+            if(this.compare(temp?.value, node?.value) > 0) temp = temp?.left!;
+            else temp = temp?.right!;
         }
 
-        // Attach at the first absent child or record an equal-value occurrence.
+        // Attach a new ordered child or record another occurrence of an equal value.
         if(this.compare(temp?.value, node?.value) < 0) {
             temp.right = node;
             this.count++;
@@ -58,10 +45,7 @@ class BinarySearchTree<V> {
             temp.left = node;
             this.count++;
             this.next_key++;
-        } else {
-            temp.occurrences!++;
-        }
-
+        } else temp.occurrences!++;
         return true;
     }
 
@@ -70,12 +54,8 @@ class BinarySearchTree<V> {
         let found: Node<number, V> | undefined = undefined;
         let child_direction: string | undefined = undefined;
         let temp: Node<number, V> | undefined = this.root;
-
-        // Keep the parent and direction so removal can reconnect the subtree.
-        while(
-            temp !== undefined &&
-            this.compare(temp?.value, value) !== 0
-        ) {
+        // Retain parent context so removal can reconnect the matching subtree.
+        while(temp !== undefined && this.compare(temp?.value, value) !== 0) {
             if(this.compare(temp?.value, value) > 0) {
                 parent = temp;
                 child_direction = 'left';
@@ -86,128 +66,78 @@ class BinarySearchTree<V> {
                 temp = temp?.right;
             }
         }
-
-        if(temp !== undefined) {
-            found = temp;
-        }
-
+        if(temp !== undefined) found = temp;
         return { target: found, child_direction, parent: typeof found !== 'undefined' ? parent : undefined };
     }
 
-    find(value: V): Node<number, V> | undefined {
-        return this._find(value)?.target
-    }
-
-    contains(value: V): boolean {
-        return !!this.find(value);
-    }
+    find(value: V): Node<number, V> | undefined { return this._find(value)?.target; }
+    contains(value: V): boolean { return !!this.find(value); }
 
     remove(value: V): boolean {
         const found = this._find(value);
+        // Missing values leave the tree unchanged.
+        if(typeof found?.target === 'undefined') return false;
 
-        if(typeof found?.target !== 'undefined') {
-            let parent: Node<number, V> | undefined = undefined;
-            let replacement: Node<number, V> | undefined = undefined;
-            // The leftmost node in the right subtree is the in-order successor.
-            if(typeof found?.target?.right !== 'undefined') {
-                replacement = found?.target?.right;
-                while(typeof replacement?.left !== 'undefined') {
-                    parent = replacement;
-                    replacement = replacement?.left;
-                }
-
-                replacement.left = found.target.left;
-                if(typeof parent !== 'undefined') {
-                    parent.left = replacement.right;
-                    replacement.right = found.target.right;
-                }
-            } else {
-                replacement = found?.target?.left;
+        let parent: Node<number, V> | undefined = undefined;
+        let replacement: Node<number, V> | undefined = undefined;
+        // Use the leftmost node in the right subtree as the in-order successor.
+        if(typeof found.target.right !== 'undefined') {
+            replacement = found.target.right;
+            while(typeof replacement?.left !== 'undefined') {
+                parent = replacement;
+                replacement = replacement?.left;
             }
-
-            // Replace either the root reference or the parent's matching child.
-            if(typeof found?.parent != 'undefined') {
-                if(found?.child_direction === 'right') {
-                    found.parent.right = replacement;
-                } else {
-                    found.parent.left = replacement;
-                }
-            } else {
-                this.root = replacement;
+            replacement.left = found.target.left;
+            if(typeof parent !== 'undefined') {
+                parent.left = replacement.right;
+                replacement.right = found.target.right;
             }
+        } else replacement = found.target.left;
 
-            this.count--;
-
-            return true;
-        } else {
-            return false;
-        }
+        // Reconnect either the root reference or the parent's matching child.
+        if(typeof found.parent != 'undefined') {
+            if(found.child_direction === 'right') found.parent.right = replacement;
+            else found.parent.left = replacement;
+        } else this.root = replacement;
+        this.count--;
+        return true;
     }
 
     private recurse(node: Node<number, V> | undefined, visit: (node: Node<number, V> | undefined) => boolean): boolean {
         if(typeof node == 'undefined') return true;
-
-        // In-order traversal is left subtree, node, then right subtree.
-        if(node?.left) {
-            if(!this.recurse(node?.left, visit)) {
-                return false;
-            }
-        }
-
+        // In-order traversal visits lower values, then this node, then higher values.
+        if(node.left && !this.recurse(node.left, visit)) return false;
         if(!visit(node)) return false;
-
-        if(node.right) {
-            if(!this.recurse(node?.right, visit)) {
-                return false;
-            }
-        }
-
+        if(node.right && !this.recurse(node.right, visit)) return false;
         return true;
     }
 
-    inOrder(visit: (node: Node<number, V> | undefined) => boolean): boolean {
-        return this.recurse(this.root, visit)
-    }
+    inOrder(visit: (node: Node<number, V> | undefined) => boolean): boolean { return this.recurse(this.root, visit); }
+    size(): number { return this.count; }
+    isEmpty(): boolean { return this.count === 0; }
 
-    size(): number {
-        return this.count;
-    }
-
-    isEmpty(): boolean {
-        return this.count === 0;
-    }
-
-    // graph view methods
-    directed(): boolean {
-        return true;
-    }
-
-    nodeCount(): number {
-        return this.size();
-    }
+    // Tree edges are directed from each parent to its children.
+    directed(): boolean { return true; }
+    nodeCount(): number { return this.size(); }
 
     nodeByKey(key: number): Node<number, V> | undefined {
         let this_node: Node<number, V> | undefined = undefined;
-
         // Stable keys are not comparator values, so search the complete tree.
         this.inOrder((node: Node<number, V> | undefined): boolean => {
             if(node?.key === key) {
                 this_node = node;
                 return false;
             }
-
             return true;
         });
-
         return this_node;
     }
 
     neighbors(node: Node<number, V>): Iterable<Edge<number, V>> {
-        // A tree graph exposes directed edges from each parent to existing children.
         return [
             ...(node.left ? [{ from: node, to: node.left, weight: 1 }] : []),
             ...(node.right ? [{ from: node, to: node.right, weight: 1 }] : [])
-        ]
+        ];
     }
 };
 

@@ -28,6 +28,7 @@ class Queue<A> {
     }
 
     isEmpty(): boolean {
+        // No stored values means there is no queue front to read or remove.
         return this.queue.length === 0;
     }
 };

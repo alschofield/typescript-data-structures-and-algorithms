@@ -2,16 +2,12 @@
 
 ## Public Contract
 
-`mergeSort<T>(items, compare): boolean | void`
-
-- `T` is structural and the comparator defines order.
-- The visible tests do not define return meaning, mutation semantics, stability, or allocation behavior.
+`mergeSort(items, compare)` sorts `items` in place and returns `true`; it uses
+temporary arrays while retaining the original container and object references.
 
 ## Safety And Semantics
 
-- Nullish inputs, comparator failures, comparator result conventions, and equal-item treatment are unverified.
-- Any auxiliary sequence must preserve stored reference identity; whether the original container is replaced or mutated must be tested explicitly.
-- Split indexes and lengths must be finite integral values within the sequence bounds.
+- Left-side ties are merged first, making this implementation stable.
 
 ## Complexity And Verification
 

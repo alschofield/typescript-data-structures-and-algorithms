@@ -27,7 +27,8 @@ describe("Prefix Trie", () => {
     trie.insert("cat");
     trie.insert("cat");
     expect(trie.size()).toBe(1);
-    expect(trie._find("cat")?.occurrences).toBe(1);
+    expect(trie.contains("cat")).toBe(true);
+    expect(trie.char_count).toBe(3);
   });
 
   it("removes terminal words and prunes only unused nodes", () => {

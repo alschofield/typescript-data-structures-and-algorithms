@@ -2,16 +2,13 @@
 
 ## Public Contract
 
-`countingSort(items, keyLimit): boolean | void`
-
-- The element type and interpretation of `keyLimit` are not declared by the visible test contract.
-- The `boolean | void` result has no specified meaning, and in-place versus copied output is unverified.
+`countingSort(items, keyLimit)` accepts non-negative safe integers in
+`[0, keyLimit)`, sorts the original array in place, and returns `true`.
 
 ## Safety And Semantics
 
-- Number safety is essential: keys and `keyLimit` need explicit finite-integer/range rules before they can index a count array.
-- Nullish inputs, invalid keys, negative values, overflow-sized allocations, stability, and reference/mutation semantics are not specified yet.
-- Do not claim a key extractor, range convention, or error behavior that is absent from code/tests.
+- Invalid limits or values return `false` before mutating the input. The method
+  does not support negative, fractional, or out-of-range values.
 
 ## Complexity And Verification
 

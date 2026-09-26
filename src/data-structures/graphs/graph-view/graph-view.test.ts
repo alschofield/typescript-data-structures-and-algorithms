@@ -6,15 +6,15 @@ describe("GraphView", () => {
     const first = graphNode("first", 0);
     const second = graphNode("second", 1);
     const third = graphNode("third", 2);
-    const firstToSecond: Edge<string> = { from: first, to: second, weight: 4 };
-    const firstToThird: Edge<string> = { from: first, to: third, weight: 1 };
-    first.edges.push(firstToSecond, firstToThird);
+    const firstToSecond: Edge<number, string> = { from: first, to: second, weight: 4 };
+    const firstToThird: Edge<number, string> = { from: first, to: third, weight: 1 };
+    graphEdges(first).push(firstToSecond, firstToThird);
     const nodes = [first, second, third];
     const graph: GraphView<number, string> = {
       directed: () => true,
       nodeCount: () => nodes.length,
       nodeByKey: (key) => nodes.find((node) => node.key === key),
-      neighbors: (node) => node.edges,
+      neighbors: (node) => graphEdges(node),
     };
 
     expect(graph.directed()).toBe(true);
@@ -41,28 +41,28 @@ describe("GraphView", () => {
     const root = graphNode({ label: "root" }, 0);
     const child = graphNode({ label: "child" }, 1);
     const edge: Edge<number, { label: string }> = { from: root, to: child, weight: 7 };
-    root.children.push(child);
-    root.edges.push(edge);
+    graphChildren(root).push(child);
+    graphEdges(root).push(edge);
     child.parent = root;
 
-    expect(root.children[0]).toBe(child);
+    expect(graphChildren(root)[0]).toBe(child);
     expect(child.parent).toBe(root);
-    expect(root.edges[0].from).toBe(root);
-    expect(root.edges[0].to).toBe(child);
-    expect(root.edges[0].weight).toBe(7);
+    expect(graphEdges(root)[0].from).toBe(root);
+    expect(graphEdges(root)[0].to).toBe(child);
+    expect(graphEdges(root)[0].weight).toBe(7);
   });
 
   it("separates logical undirected edges from traversal neighbors", () => {
     const left = graphNode("left", 0);
     const right = graphNode("right", 1);
     const logicalEdge: Edge<number, string> = { from: left, to: right, weight: 3 };
-    left.edges.push(logicalEdge);
-    right.edges.push({ from: right, to: left, weight: 3 });
+    graphEdges(left).push(logicalEdge);
+    graphEdges(right).push({ from: right, to: left, weight: 3 });
     const graph: UndirectedEdgeGraphView<number, string> = {
       directed: () => false,
       nodeCount: () => 2,
       nodeByKey: (key) => [left, right].find((node) => node.key === key),
-      neighbors: (node) => node.edges,
+      neighbors: (node) => graphEdges(node),
       edges: function* () {
         yield logicalEdge;
       },
@@ -85,4 +85,12 @@ function graphNode<K, V>(value: V, key: K): Node<K, V> {
     children: [],
     edges: [],
   };
+}
+
+function graphChildren<K, V>(node: Node<K, V>): Array<Node<K, V>> {
+  return node.children as Array<Node<K, V>>;
+}
+
+function graphEdges<K, V>(node: Node<K, V>): Array<Edge<K, V>> {
+  return node.edges as Array<Edge<K, V>>;
 }

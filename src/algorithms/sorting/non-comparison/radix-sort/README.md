@@ -2,15 +2,13 @@
 
 ## Public Contract
 
-`radixSort(items): boolean | void`
-
-- The current tests do not declare the element type, supported numeric domain, return meaning, or mutation behavior.
+`radixSort(items)` sorts unsigned 32-bit safe integers in place using four
+8-bit passes and returns `true`.
 
 ## Safety And Semantics
 
-- Number safety must be explicit: finite integers, sign handling, radix, and maximum supported magnitude are all unspecified.
-- Nullish inputs, invalid values, stability, and output/reference semantics remain unverified.
-- Do not add a comparator, radix option, key extractor, or error mode without an implementation contract.
+- Negative, fractional, and values above `0xffffffff` return `false` without
+  mutating the input. Each digit pass is stable.
 
 ## Complexity And Verification
 
