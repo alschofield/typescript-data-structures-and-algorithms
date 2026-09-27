@@ -2,7 +2,7 @@
 
 ## Implementation Status
 
-Target scaffold. Production behavior is not claimed until the learner-owned implementation and its verification are complete.
+Implemented and covered by focused behavior tests and a Vitest benchmark.
 
 ## How It Works
 
